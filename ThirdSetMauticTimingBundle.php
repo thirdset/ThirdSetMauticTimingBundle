@@ -14,6 +14,8 @@ use Mautic\PluginBundle\Bundle\PluginBundleBase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
+use MauticPlugin\ThirdSetMauticTimingBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
+
 /**
  * Class ThirdSetMauticTimingBundle
  *
@@ -51,5 +53,8 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
             ->addArgument(new Reference('session'))
             ->addArgument(new Reference('plugin.thirdset.timing.campaign_event_manager'))
             ->addTag('form.type_extension', array('extended_type' => 'Mautic\CampaignBundle\Form\Type\EventType'));
+        
+        //Add a compiler pass for overriding mautic services
+        $container->addCompilerPass(new OverrideServiceCompilerPass());
     }
 }
