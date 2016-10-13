@@ -59,22 +59,24 @@ class EventTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //add the timing field
-        $builder->add('timing', 'text', array(
-                    'attr' => array(
-                            'title' => 'Enter when the email can be sent.',
-                            'style' => 'margin-top: 1em',
-                        )
-                    )
-                );
-        
-        //add a custom form event subscriber
-        $builder->addEventSubscriber(
-                        new CampaignEventFormSubscriber(
-                                $this->session,
-                                $this->campaignEventManager
+        if (in_array($options['data']['eventType'], ['action', 'condition'])) {
+            //add the timing field
+            $builder->add('timing', 'text', array(
+                        'attr' => array(
+                                'title' => 'Enter when the email can be sent.',
+                                'style' => 'margin-top: 1em',
+                            )
                         )
                     );
+
+            //add a custom form event subscriber
+            $builder->addEventSubscriber(
+                            new CampaignEventFormSubscriber(
+                                    $this->session,
+                                    $this->campaignEventManager
+                            )
+                        );
+        }
     }
     
 }
