@@ -10,6 +10,10 @@ namespace MauticPlugin\ThirdSetMauticTimingBundle\Form\Extension;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+
+use MauticPlugin\ThirdSetMauticTimingBundle\EventListener\CampaignEventFormSubscriber;
+use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
 
 /**
  * Class EventTypeExtension
@@ -18,6 +22,26 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 class EventTypeExtension extends AbstractTypeExtension
 {
+    /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
+    private $session;
+
+    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
+    private $campaignEventManager;
+
+    /**
+     * Constructor.
+     * @param Session $session
+     * @param CampaignEventManager $campaignEventManager
+     */
+    public function __construct(
+                        Session $session,
+                        CampaignEventManager $campaignEventManager
+                    )
+    {
+        $this->session = $session;
+        $this->campaignEventManager = $campaignEventManager;
+    }
+    
     /**
      * Returns the name of the type being extended.
      *
@@ -35,6 +59,7 @@ class EventTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //add the timing field
         $builder->add('timing', 'text', array(
                     'attr' => array(
                             'title' => 'Enter when the email can be sent.',
@@ -42,6 +67,14 @@ class EventTypeExtension extends AbstractTypeExtension
                         )
                     )
                 );
+        
+        //add a custom form event subscriber
+        $builder->addEventSubscriber(
+                        new CampaignEventFormSubscriber(
+                                $this->session,
+                                $this->campaignEventManager
+                        )
+                    );
     }
     
 }
