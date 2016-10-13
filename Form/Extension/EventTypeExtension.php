@@ -65,6 +65,7 @@ class EventTypeExtension extends AbstractTypeExtension
                         'attr' => array(
                                 'title' => 'Enter when the email can be sent.',
                                 'style' => 'margin-top: 1em',
+                                'tooltip'  => 'When is the event allowed to occur. Uses standard crontab notation.',
                             )
                         )
                     );
