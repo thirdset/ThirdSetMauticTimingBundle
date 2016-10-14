@@ -15,6 +15,8 @@ use MauticPlugin\ThirdSetMauticTimingBundle\TimingEvents;
 use MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent;
 use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
 
+use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
+
 /**
  * Class CampaignEventSubscriber.
  *
@@ -62,10 +64,11 @@ class CampaignEventSubscriber extends CommonSubscriber
         
         $eventTiming = $this->campaignEventManager->getEventTiming($eventId);
         
+        $cron = CronExpression::factory($eventTiming);
         
-        //TODO Add logic to evaluate the $eventTiming variable and conditionally abort execution.
-        //error_log($eventTiming);
-        
-        //$event->abortExection(true);
+        //if the event isn't due (according to it's cron timing restrictions), abort execution
+        if( ! $cron->isDue()) {
+            $event->abortExection(true);
+        }
     }
 }
