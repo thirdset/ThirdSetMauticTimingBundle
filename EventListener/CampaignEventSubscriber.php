@@ -13,6 +13,7 @@ use Mautic\CoreBundle\EventListener\CommonSubscriber;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\TimingEvents;
 use MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent;
+use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
 
 /**
  * Class CampaignEventSubscriber.
@@ -22,12 +23,18 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent;
 class CampaignEventSubscriber extends CommonSubscriber
 {
 
+    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
+    private $campaignEventManager;
+    
     /**
      * Constructor.
+     * @param CampaignEventManager $campaignEventManager
      */
-    public function __construct()
+    public function __construct(
+                CampaignEventManager $campaignEventManager
+            )
     {
-        //
+        $this->campaignEventManager = $campaignEventManager;
     }
     
     /**
@@ -44,9 +51,21 @@ class CampaignEventSubscriber extends CommonSubscriber
     /**
      * Method to be applied to the kernel.controler event.  
      * @param \MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent $event
+     * Note that this is the event system's event not the campaign event.
      */
     public function onPreEventExecution(CampaignPreExecutionEvent $event)
     {
+        /** @var $eventData array */
+        $eventData = $event->getEvent();
+        
+        $eventId = $eventData['id'];
+        
+        $eventTiming = $this->campaignEventManager->getEventTiming($eventId);
+        
+        
+        //TODO Add logic to evaluate the $eventTiming variable and conditionally abort execution.
+        //error_log($eventTiming);
+        
         //$event->abortExection(true);
     }
 }

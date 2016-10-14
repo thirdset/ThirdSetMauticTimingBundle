@@ -38,7 +38,7 @@ class CampaignPreExecutionEvent extends Event
     {
         $this->event = $args['event'];
         
-        $this->isExecutionAborted = false;
+        $this->abortExecution = false;
     }
 
     /**
@@ -50,19 +50,19 @@ class CampaignPreExecutionEvent extends Event
     }
     
     /**
-     * 
+     * Get whenther or not execution should be aborted.
      * @return boolean
      */
     public function isExecutionAborted()
     {
-        return $this->isExecutionAborted;
+        return $this->abortExecution;
     }
     
     /**
-     * 
-     * @param type $abortExectuion
+     * Set whether or not execution should be aborted.
+     * @param boolean $abortExecution
      */
-    public function abortExection($abortExectuion)
+    public function abortExection($abortExecution)
     {
         $this->abortExecution = $abortExecution;
     }
