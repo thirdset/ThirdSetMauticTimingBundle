@@ -31,8 +31,10 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
     {
         parent::build($container);
         
-        //NOTE: this is declared here (instead of in config.php) so that we
-        //can inject it into the services defined below in this file.
+        /**
+         * NOTE: this is declared here (instead of in config.php) so that we
+         * can inject it into the services defined below in this file.
+         */
         $container
             ->register(
                 'plugin.thirdset.timing.campaign_event_manager',
@@ -41,7 +43,21 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
             ->addArgument(new Reference('doctrine.orm.entity_manager'));
         
         /**
-         * Type Extensions
+         * EventType
+         * NOTE: this is declared here (instead of in config.php) so that we
+         * can inject it into the services defined below in this file.
+         */
+        $container
+            ->register(
+                'plugin.thirdset.timing.timing',
+                'MauticPlugin\ThirdSetMauticTimingBundle\Form\Type\TimingType'
+            )
+            ->addArgument(new Reference('session'))
+            ->addArgument(new Reference('plugin.thirdset.timing.campaign_event_manager'))
+            ->addTag('form.type', array('alias' => 'timing'));
+        
+        /**
+         * Form Type Extensions
          * Note: these are registered here because Mautic's config system
          * doesn't seem to be able to handle complex tags.
          */
@@ -53,6 +69,17 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
             ->addArgument(new Reference('session'))
             ->addArgument(new Reference('plugin.thirdset.timing.campaign_event_manager'))
             ->addTag('form.type_extension', array('extended_type' => 'Mautic\CampaignBundle\Form\Type\EventType'));
+        
+        //Register our custom form theme
+        $container->loadFromExtension('framework', array(
+            'templating' => array(
+                'form' => array(
+                    'resources' => array(
+                        'ThirdSetMauticTimingBundle:FormTheme\Custom',
+                    ),
+                ),
+            ),
+        )); 
         
         //Add a compiler pass for overriding mautic services
         $container->addCompilerPass(new OverrideServiceCompilerPass());

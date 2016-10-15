@@ -16,14 +16,15 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
 
 /**
- * Class CampaignEventFormSubscriber.
+ * Class TimingFormSubscriber. Subscribes to events that occur with the Timing
+ * form.
  * 
  * Note: this subscriber is registered in the Form\Extension\EventTypeExtension
  * class.
  *
  * @package ThirdSetMauticTimingBundle
  */
-class CampaignEventFormSubscriber implements EventSubscriberInterface
+class TimingFormSubscriber implements EventSubscriberInterface
 {
     /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
@@ -69,16 +70,19 @@ class CampaignEventFormSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         
         //if the timing isn't set, try to get it from the db.
-        if( ! array_key_exists('timing', $data)) {
+        if( ! isset($data['timing']['timing_expression'])) {
         
             //pull the campaign event id from the form data
             $eventId = $data['id'];
 
             //retrieve the campaign event timing from the db.
+            /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing */
             $timing = $this->campaignEventManager->getEventTiming($eventId);
 
             //add the campaign event timing to the data.
-            $data['timing'] = $timing;
+            $data['timing']['timing_expression'] = $timing->getExpression();
+            $data['timing']['timing_use_contact_timezone'] = $timing->getUseContactTimezone();
+            $data['timing']['timing_timezone'] = $timing->getTimezone();
 
             //set our modified data as the data to be sent to the form
             $event->setData($data);

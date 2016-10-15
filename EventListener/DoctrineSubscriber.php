@@ -15,6 +15,8 @@ use Doctrine\ORM\Events;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
+use MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing;
+
 /**
  * Class DoctrineSubscriber.
  *
@@ -90,20 +92,26 @@ class DoctrineSubscriber implements EventSubscriber
             //get the timing data out of the session
             $modifiedEvents = $this->session->get('mautic.campaign.'.$campaignId.'.events.modified', []);
             $eventData = $modifiedEvents[$event->getId()];
-            $timing = $eventData['timing'];
+            $timingArr = $eventData['timing'];
+            $timing = Timing::createFromDataArray($timingArr);
             
-            //update the event with the timing data
+            //----- update the event with the timing data ------
             $em = $args->getEntityManager();
             
             /* @var $qb \Doctrine\DBAL\Query\QueryBuilder */
             $qb = $em->getConnection()->createQueryBuilder();
 
             $qb->update(MAUTIC_TABLE_PREFIX . 'campaign_events')
-                ->set('timing', ':timing')
+                ->set('timing_expression', ':expression')
+                ->set('timing_use_contact_timezone', ':useContactTimezone')
+                ->set('timing_timezone', ':timezone')
                 ->where('id = :id')
-                ->setParameter('timing', $timing)
+                ->setParameter('expression', $timing->getExpression())
+                ->setParameter('useContactTimezone', $timing->getUseContactTimezone())
+                ->setParameter('timezone', $timing->getTimezone())
                 ->setParameter('id', $event->getId())
                 ->execute();
+            //--------------------------------------------------
         }
     }
 }

@@ -10,6 +10,8 @@ namespace MauticPlugin\ThirdSetMauticTimingBundle\Model;
 
 use Doctrine\ORM\EntityManager;
 
+use MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing;
+
 /**
  * The CampaignEventManager class contains custom methods for managing campaign
  * Events.
@@ -41,7 +43,8 @@ class CampaignEventManager
      *
      * @param int $eventId The id of the Event that you want to get the timing
      * data for.
-     * @return string Returns the timing data for the Event
+     * @return MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing Returns
+     *  the timing data for the Event
      */
     public function getEventTiming(
                         $eventId
@@ -50,12 +53,14 @@ class CampaignEventManager
         /* @var $qb \Doctrine\DBAL\Query\QueryBuilder */
         $qb = $this->em->getConnection()->createQueryBuilder();
 
-        $timing = $qb->select(timing)
-                ->from(MAUTIC_TABLE_PREFIX . 'campaign_events')
-                ->where('id = :id')
-                ->setParameter('id', $eventId)
-                ->execute()
-                ->fetchColumn();
+        $result = $qb->select(array('timing_expression', 'timing_use_contact_timezone', 'timing_timezone'))
+                     ->from(MAUTIC_TABLE_PREFIX . 'campaign_events')
+                     ->where('id = :id')
+                     ->setParameter('id', $eventId)
+                     ->execute()
+                     ->fetch();
+        
+        $timing = Timing::createFromDataArray($result);
         
         return $timing;
     }

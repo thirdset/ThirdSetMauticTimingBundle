@@ -12,11 +12,13 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use MauticPlugin\ThirdSetMauticTimingBundle\EventListener\CampaignEventFormSubscriber;
 use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
+use MauticPlugin\ThirdSetMauticTimingBundle\EventListener\TimingFormSubscriber;
 
 /**
- * Class EventTypeExtension
+ * Class EventTypeExtension.
+ * 
+ * This extension is registered in the ThirdSetMauticTimingBundle class.
  *
  * @package ThirdSetMauticTimingBundle
  */
@@ -59,24 +61,23 @@ class EventTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        //if this is an 'action' or 'condition' event, add the timing form.
         if (in_array($options['data']['eventType'], ['action', 'condition'])) {
-            //add the timing field
-            $builder->add('timing', 'text', array(
-                        'attr' => array(
-                                'title' => 'Enter when the email can be sent.',
-                                'style' => 'margin-top: 1em',
-                                'tooltip'  => 'When is the event allowed to occur. Uses standard crontab notation.',
-                            )
+            
+            //add timing form
+            $builder->add('timing', 'timing', array(
+                    'required'    => false,
+                )
+            );
+            
+            //add timing form event subscriber
+            $builder->addEventSubscriber(
+                        new TimingFormSubscriber(
+                                $this->session,
+                                $this->campaignEventManager
                         )
                     );
-
-            //add a custom form event subscriber
-            $builder->addEventSubscriber(
-                            new CampaignEventFormSubscriber(
-                                    $this->session,
-                                    $this->campaignEventManager
-                            )
-                        );
+            
         }
     }
     

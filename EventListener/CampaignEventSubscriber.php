@@ -62,9 +62,10 @@ class CampaignEventSubscriber extends CommonSubscriber
         
         $eventId = $eventData['id'];
         
-        $eventTiming = $this->campaignEventManager->getEventTiming($eventId);
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing */
+        $timing = $this->campaignEventManager->getEventTiming($eventId);
         
-        $cron = CronExpression::factory($eventTiming);
+        $cron = CronExpression::factory($timing->getExpression());
         
         //if the event isn't due (according to it's cron timing restrictions), abort execution
         if( ! $cron->isDue()) {
