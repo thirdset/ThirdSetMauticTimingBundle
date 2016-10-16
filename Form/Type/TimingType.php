@@ -53,7 +53,7 @@ class TimingType extends AbstractType
         $builder->add('timing_expression', 'text', array(
                     'attr' => array(
                             'title' => 'Enter when the email can be sent.',
-                            'tooltip'  => 'When is the event allowed to occur. Uses standard crontab notation (google it!).',
+                            'tooltip'  => 'When is the event allowed to occur? Uses standard crontab notation (Google it!).',
                         )
                     )
                 );
@@ -71,7 +71,7 @@ class TimingType extends AbstractType
                 'label'      => 'Timing Time Zone',
                 'attr'       => array(
                     'class'   => 'form-control',
-                    'tooltip' => 'Choose the timezone to use when evaluating the timing expression',
+                    'tooltip' => 'Choose the timezone to use when evaluating the timing expression.',
                 ),
                 'multiple'    => false,
                 'empty_value' => 'mautic.user.user.form.defaulttimezone',

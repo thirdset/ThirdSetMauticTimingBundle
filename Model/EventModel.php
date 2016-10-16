@@ -39,7 +39,8 @@ class EventModel extends \Mautic\CampaignBundle\Model\EventModel
     ) {
         //dispatch our custom event
         $args = [
-                    'event'           => $event,
+                    'event' => $event,
+                    'lead'  => $lead,
                 ];
         $preExecutionEvent = new CampaignPreExecutionEvent($args);
         $this->dispatcher->dispatch(TimingEvents::PRE_EVENT_EXECUTION, $preExecutionEvent);

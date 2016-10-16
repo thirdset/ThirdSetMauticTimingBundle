@@ -13,9 +13,7 @@ use Mautic\CoreBundle\EventListener\CommonSubscriber;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\TimingEvents;
 use MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent;
-use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
-
-use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
+use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
 
 /**
  * Class CampaignEventSubscriber.
@@ -25,18 +23,18 @@ use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
 class CampaignEventSubscriber extends CommonSubscriber
 {
 
-    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
-    private $campaignEventManager;
+    /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+    private $timingHelper;
     
     /**
      * Constructor.
-     * @param CampaignEventManager $campaignEventManager
+     * @param TimingHelper $timingHelper
      */
     public function __construct(
-                CampaignEventManager $campaignEventManager
+                TimingHelper $timingHelper
             )
     {
-        $this->campaignEventManager = $campaignEventManager;
+        $this->timingHelper = $timingHelper;
     }
     
     /**
@@ -62,13 +60,11 @@ class CampaignEventSubscriber extends CommonSubscriber
         
         $eventId = $eventData['id'];
         
-        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing */
-        $timing = $this->campaignEventManager->getEventTiming($eventId);
+        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $event->getLead();
         
-        $cron = CronExpression::factory($timing->getExpression());
-        
-        //if the event isn't due (according to it's cron timing restrictions), abort execution
-        if( ! $cron->isDue()) {
+        //if the event isn't due (according to its timing restrictions), abort execution
+        if( ! $this->timingHelper->isDue($eventId, $lead)) {
             $event->abortExection(true);
         }
     }

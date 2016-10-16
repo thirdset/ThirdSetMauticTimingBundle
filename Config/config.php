@@ -34,11 +34,18 @@ return array(
                 ],
             ),
         ),
+        //HELPERS
+        'helpers' => array(
+            'plugin.thirdset.timing.timing_helper' => array(
+                'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper',
+                'arguments' => 'plugin.thirdset.timing.campaign_event_manager',
+            ),
+        ),
         //EVENT SUBSCRIBERS/LISTENERS (Note: there are more in the "other" section)
         'events' => array(
             'plugin.thirdset.timing.campaign_pre_execution_event_listener' => array(
                 'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\EventListener\CampaignEventSubscriber',
-                'arguments' => 'plugin.thirdset.timing.campaign_event_manager',
+                'arguments' => 'plugin.thirdset.timing.timing_helper',
             ),
         ),
     ),

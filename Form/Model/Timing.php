@@ -52,7 +52,7 @@ class Timing
      */
     public static function createFromDataArray($dataArray)
     {
-        $useContactTimezone = ( ! empty($dataArray['use_contact_timezone'])) ? $dataArray['use_contact_timezone'] : 0;
+        $useContactTimezone = ( ! empty($dataArray['timing_use_contact_timezone'])) ? $dataArray['timing_use_contact_timezone'] : 0;
         
         $instance = new self(
                     $dataArray['timing_expression'],
