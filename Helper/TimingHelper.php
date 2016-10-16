@@ -77,8 +77,6 @@ class TimingHelper
             $timezone = date_default_timezone_get();
         }
         
-        echo $timezone . "\n";
-        
         //calculate now (offset by the timezone)
         $now = new \DateTime('now', new \DateTimeZone($timezone) );
         
