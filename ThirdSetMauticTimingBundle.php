@@ -9,10 +9,10 @@
 
 namespace MauticPlugin\ThirdSetMauticTimingBundle;
 
-use Mautic\PluginBundle\Bundle\PluginBundleBase;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
+
+use Mautic\PluginBundle\Bundle\PluginBundleBase;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
 
@@ -38,7 +38,7 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
         $container
             ->register(
                 'plugin.thirdset.timing.campaign_event_manager',
-                'MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager'
+                'MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel'
             )
             ->addArgument(new Reference('doctrine.orm.entity_manager'));
         
@@ -67,7 +67,8 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
                 'MauticPlugin\ThirdSetMauticTimingBundle\Form\Extension\EventTypeExtension'
             )
             ->addArgument(new Reference('session'))
-            ->addArgument(new Reference('plugin.thirdset.timing.campaign_event_manager'))
+            ->addArgument(new Reference('mautic.campaign.model.event'))
+            ->addArgument(new Reference('plugin.thirdset.timing.event_timing_model'))
             ->addTag('form.type_extension', array('extended_type' => 'Mautic\CampaignBundle\Form\Type\EventType'));
         
         //Register our custom form theme
@@ -84,4 +85,5 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
         //Add a compiler pass for overriding mautic services
         $container->addCompilerPass(new OverrideServiceCompilerPass());
     }
+    
 }

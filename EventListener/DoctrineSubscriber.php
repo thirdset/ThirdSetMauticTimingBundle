@@ -15,7 +15,7 @@ use Doctrine\ORM\Events;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing;
+use MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing;
 
 /**
  * Class DoctrineSubscriber.
@@ -73,9 +73,8 @@ class DoctrineSubscriber implements EventSubscriber
     /**
      * Private helper method for adding timing data to an Event.
      * 
-     * Note: we access the db from within this function (instead of a manager,
-     * model class) because the EM included in the args is set to avoid circular
-     * references.
+     * Note: we access the db from within this function (instead of a model
+     * class) to avoid circular references.
      * 
      * @param LifecycleEventArgs $args
      */
@@ -87,31 +86,32 @@ class DoctrineSubscriber implements EventSubscriber
             /** @var \Mautic\CampaignBundle\Entity\Event $event */
             $event = $entity;
             
-            $campaignId = $event->getCampaign()->getId();;
+            $campaignId = $event->getCampaign()->getId();
             
             //get the timing data out of the session
             $modifiedEvents = $this->session->get('mautic.campaign.'.$campaignId.'.events.modified', []);
             $eventData = $modifiedEvents[$event->getId()];
             $timingArr = $eventData['timing'];
-            $timing = Timing::createFromDataArray($timingArr);
             
-            //----- update the event with the timing data ------
+            //get the timing object (note: we have to go through the attached em to prevent a circular reference)
+            /* @var $em \Doctrine\ORM\EntityManager */
             $em = $args->getEntityManager();
+            /* @var $timingRepository \MauticPlugin\ThirdSetMauticTimingBundle\Entity\TimingRepository */
+            $timingRepository = $em->getRepository('ThirdSetMauticTimingBundle:Timing');
+            /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+            $timing = $timingRepository->getEntity($event->getId());
             
-            /* @var $qb \Doctrine\DBAL\Query\QueryBuilder */
-            $qb = $em->getConnection()->createQueryBuilder();
-
-            $qb->update(MAUTIC_TABLE_PREFIX . 'campaign_events')
-                ->set('timing_expression', ':expression')
-                ->set('timing_use_contact_timezone', ':useContactTimezone')
-                ->set('timing_timezone', ':timezone')
-                ->where('id = :id')
-                ->setParameter('expression', $timing->getExpression())
-                ->setParameter('useContactTimezone', $timing->getUseContactTimezone())
-                ->setParameter('timezone', $timing->getTimezone())
-                ->setParameter('id', $event->getId())
-                ->execute();
-            //--------------------------------------------------
+            //if there isn't any timing data yet, create a new Timing Entity.
+            if($timing == null) {
+                $timing = new Timing($event);
+            }
+            
+            //add the new data
+            $timing->addPostData($timingArr);
+            
+            //persist the Timing
+            $em->persist($timing);
+            $em->flush();
         }
     }
 }

@@ -18,13 +18,14 @@ return array(
     'version'     => '1.0',
     'author'      => 'Third Set Productions',
     'services'    => array(
+        //MODELS
+        'models' => array(
+            'plugin.thirdset.timing.event_timing_model' => array(
+                'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel',
+            ),
+        ),
         //OTHER
         'other' => array(
-            //MANAGERS
-            'plugin.thirdset.timing.campaign_event_manager' => array(
-                'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager',
-                'arguments' => 'doctrine.orm.entity_manager',
-            ),
             //SUBSCRIBERS
             'plugin.thirdset.timing.doctrine_subscriber' => array(
                 'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\EventListener\DoctrineSubscriber',
@@ -38,12 +39,15 @@ return array(
         'helpers' => array(
             'plugin.thirdset.timing.timing_helper' => array(
                 'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper',
-                'arguments' => 'plugin.thirdset.timing.campaign_event_manager',
+                'arguments' => [
+                    'mautic.campaign.model.event',
+                    'plugin.thirdset.timing.event_timing_model',
+                ]
             ),
         ),
         //EVENT SUBSCRIBERS/LISTENERS (Note: there are more in the "other" section)
         'events' => array(
-            'plugin.thirdset.timing.campaign_pre_execution_event_listener' => array(
+            'plugin.thirdset.timing.campaign_event_subscriber' => array(
                 'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\EventListener\CampaignEventSubscriber',
                 'arguments' => 'plugin.thirdset.timing.timing_helper',
             ),

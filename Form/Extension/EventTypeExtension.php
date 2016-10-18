@@ -12,7 +12,9 @@ use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
+use Mautic\CampaignBundle\Model\EventModel;
+
+use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 use MauticPlugin\ThirdSetMauticTimingBundle\EventListener\TimingFormSubscriber;
 
 /**
@@ -27,21 +29,27 @@ class EventTypeExtension extends AbstractTypeExtension
     /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
 
-    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
-    private $campaignEventManager;
+    /* @var $eventModel \Mautic\CampaignBundle\Model\EventModel */
+    private $eventModel;
+    
+    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+    private $timingModel;
 
     /**
      * Constructor.
      * @param Session $session
-     * @param CampaignEventManager $campaignEventManager
+     * @param EventModel $eventModel
+     * @param TimingModel $timingModel
      */
     public function __construct(
                         Session $session,
-                        CampaignEventManager $campaignEventManager
+                        EventModel $eventModel,
+                        TimingModel $timingModel
                     )
     {
         $this->session = $session;
-        $this->campaignEventManager = $campaignEventManager;
+        $this->eventModel = $eventModel;
+        $this->timingModel = $timingModel;
     }
     
     /**
@@ -70,11 +78,17 @@ class EventTypeExtension extends AbstractTypeExtension
                 )
             );
             
+            $eventId = $options['data']['id'];
+            
+            /* @var $event \Mautic\CampaignBundle\Entity\Event */
+            $event = $this->eventModel->getEntity($eventId);
+            
             //add timing form event subscriber
             $builder->addEventSubscriber(
                         new TimingFormSubscriber(
                                 $this->session,
-                                $this->campaignEventManager
+                                $event,
+                                $this->timingModel
                         )
                     );
             

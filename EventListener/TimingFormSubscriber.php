@@ -13,7 +13,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
+use Mautic\CampaignBundle\Entity\Event;
+
+use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 
 /**
  * Class TimingFormSubscriber. Subscribes to events that occur with the Timing
@@ -29,21 +31,27 @@ class TimingFormSubscriber implements EventSubscriberInterface
     /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
     
-    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
-    private $campaignEventManager;
+    /* @var $event \Mautic\CampaignBundle\Entity\Event */
+    private $event;
+    
+    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+    private $timingModel;
 
     /**
      * Constructor.
      * @param Session $session
-     * @param CampaignEventManager $campaignEventManager
+     * @param \Mautic\CampaignBundle\Entity\Event $event
+     * @param TimingModel $timingModel
      */
     public function __construct(
                         Session $session,
-                        CampaignEventManager $campaignEventManager
+                        Event $event,
+                        TimingModel $timingModel
                     )
     {
         $this->session = $session;
-        $this->campaignEventManager = $campaignEventManager;
+        $this->event = $event;
+        $this->timingModel = $timingModel;
     }
 
     /**
@@ -60,32 +68,29 @@ class TimingFormSubscriber implements EventSubscriberInterface
     /**
      * Called when a form is pre-populated.
      * 
-     * Add any timing data to the event.
+     * Add any timing data to the formEvent.
      * 
-     * @param FormEvent $event
+     * @param FormEvent $formEvent
      */
-    public function onPreSetData(FormEvent $event)
+    public function onPreSetData(FormEvent $formEvent)
     {
         //get the data from the from event
-        $data = $event->getData();
+        $data = $formEvent->getData();
         
         //if the timing isn't set, try to get it from the db.
-        if( ! isset($data['timing']['timing_expression'])) {
-        
-            //pull the campaign event id from the form data
-            $eventId = $data['id'];
+        if( ! isset($data['timing']['expression'])) {
 
             //retrieve the campaign event timing from the db.
-            /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing */
-            $timing = $this->campaignEventManager->getEventTiming($eventId);
+            /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+            $timing = $this->timingModel->getEntity($this->event);
 
             //add the campaign event timing to the data.
-            $data['timing']['timing_expression'] = $timing->getExpression();
-            $data['timing']['timing_use_contact_timezone'] = $timing->getUseContactTimezone();
-            $data['timing']['timing_timezone'] = $timing->getTimezone();
+            $data['timing']['expression'] = $timing->getExpression();
+            $data['timing']['use_contact_timezone'] = $timing->getUseContactTimezone();
+            $data['timing']['timezone'] = $timing->getTimezone();
 
             //set our modified data as the data to be sent to the form
-            $event->setData($data);
+            $formEvent->setData($data);
         }
     }
     

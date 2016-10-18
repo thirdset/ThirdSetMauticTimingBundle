@@ -10,8 +10,9 @@
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Helper;
 
 use Mautic\LeadBundle\Entity\Lead;
+use Mautic\CampaignBundle\Model\EventModel;
 
-use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
+use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
 
@@ -23,18 +24,24 @@ use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
 class TimingHelper
 {
 
-    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
-    private $campaignEventManager;
+    /* @var $eventModel \Mautic\CampaignBundle\Model\EventModel */
+    private $eventModel;
+    
+    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+    private $timingModel;
     
     /**
      * Constructor.
-     * @param CampaignEventManager $campaignEventManager
+     * @param EventModel $eventModel
+     * @param TimingModel $timingModel
      */
     public function __construct(
-                CampaignEventManager $campaignEventManager
+                EventModel $eventModel,
+                TimingModel $timingModel
             )
     {
-        $this->campaignEventManager = $campaignEventManager;
+        $this->eventModel = $eventModel;
+        $this->timingModel = $timingModel;
     }
 
     /**
@@ -48,8 +55,11 @@ class TimingHelper
      */
     public function isDue($eventId, Lead $lead)
     {   
-        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Form\Model\Timing */
-        $timing = $this->campaignEventManager->getEventTiming($eventId);
+        /* @var $timing \Mautic\CampaignBundle\Entity\Event */
+        $event = $this->eventModel->getEntity($eventId);
+        
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->timingModel->getEntity($event);
         
         $cron = CronExpression::factory($timing->getExpression());
         

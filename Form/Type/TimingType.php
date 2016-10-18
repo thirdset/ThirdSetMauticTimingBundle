@@ -12,7 +12,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager;
+use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 
 /**
  * Class EventTypeExtension
@@ -24,21 +24,21 @@ class TimingType extends AbstractType
     /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
 
-    /* @var $campaignEventManager \MauticPlugin\ThirdSetMauticTimingBundle\Model\CampaignEventManager */
-    private $campaignEventManager;
+    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+    private $timingModel;
 
     /**
      * Constructor.
      * @param Session $session
-     * @param CampaignEventManager $campaignEventManager
+     * @param TimingModel $timingModel
      */
     public function __construct(
                         Session $session,
-                        CampaignEventManager $campaignEventManager
+                        TimingModel $timingModel
                     )
     {
         $this->session = $session;
-        $this->campaignEventManager = $campaignEventManager;
+        $this->timingModel = $timingModel;
     }
 
     /**
@@ -50,7 +50,7 @@ class TimingType extends AbstractType
     {
             
         //add the timing_expression field
-        $builder->add('timing_expression', 'text', array(
+        $builder->add('expression', 'text', array(
                     'attr' => array(
                             'title' => 'Enter when the email can be sent.',
                             'tooltip'  => 'When is the event allowed to occur? Uses standard crontab notation (Google it!).',
@@ -59,7 +59,7 @@ class TimingType extends AbstractType
                 );
 
         //add the "Use Contact's timezone?" field
-        $builder->add('timing_use_contact_timezone', 'yesno_button_group', [
+        $builder->add('use_contact_timezone', 'yesno_button_group', [
             'label' => 'Use Contact\'s Timezone?',
             'attr'  => [
                 'tooltip' => 'If enabled, the timing expression will be evaluated using the contact\'s time zone. If their time zone isn\'t known, it will fallback to the timezone selected below.',
@@ -67,7 +67,7 @@ class TimingType extends AbstractType
         ]);
 
         //add the "Add the timezone" field
-        $builder->add('timing_timezone', 'timezone', array(
+        $builder->add('timezone', 'timezone', array(
                 'label'      => 'Timing Time Zone',
                 'attr'       => array(
                     'class'   => 'form-control',
