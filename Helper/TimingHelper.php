@@ -50,10 +50,12 @@ class TimingHelper
      * @param integer $eventId The id of the Campaign Event to use for the
      * evaluation.
      * @param Mautic\LeadBundle\Entity\Lead The Lead to use for the evaluation.
+     * @param string $initNowStr A string for calulating 'now'.  This is used
+     * for testing and can usually be left off.
      * @return boolean Returns true if the event is due, otherwise, returns
      * false.
      */
-    public function isDue($eventId, Lead $lead)
+    public function isDue($eventId, Lead $lead, $initNowStr = 'now')
     {   
         /* @var $timing \Mautic\CampaignBundle\Entity\Event */
         $event = $this->eventModel->getEntity($eventId);
@@ -70,7 +72,6 @@ class TimingHelper
             if ($lead->getIpAddresses()) {
                 /** @var $ipDetails array */
                 $ipDetails = $lead->getIpAddresses()->first()->getIpDetails();
-                
                 if( ! empty($ipDetails['timezone'])) {
                     $timezone = $ipDetails['timezone'];
                 }
@@ -88,7 +89,8 @@ class TimingHelper
         }
         
         //calculate now (offset by the timezone)
-        $now = new \DateTime('now', new \DateTimeZone($timezone) );
+        $now = new \DateTime($initNowStr);
+        $now->setTimezone(new \DateTimeZone($timezone));
         
         //convert $now to a string (otherwise the Cron class will convert the date back to the default timezone)
         $nowStr = $now->format('Y-m-d H:i:s');
