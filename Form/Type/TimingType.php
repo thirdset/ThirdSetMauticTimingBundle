@@ -60,18 +60,18 @@ class TimingType extends AbstractType
 
         //add the "Use Contact's timezone?" field
         $builder->add('use_contact_timezone', 'yesno_button_group', [
-            'label' => 'Use Contact\'s Timezone?',
+            'label' => 'Use Contact\'s Time Zone?',
             'attr'  => [
-                'tooltip' => 'If enabled, the timing expression will be evaluated using the contact\'s time zone. If their time zone isn\'t known, it will fallback to the timezone selected below.',
+                'tooltip' => 'If enabled, the timing expression will be evaluated using the contact\'s time zone. If their time zone isn\'t known, it will fallback to the time zone selected below.',
             ],
         ]);
 
         //add the "Add the timezone" field
         $builder->add('timezone', 'timezone', array(
-                'label'      => 'Timing Time Zone',
+                'label'      => 'Time Zone',
                 'attr'       => array(
                     'class'   => 'form-control',
-                    'tooltip' => 'Choose the timezone to use when evaluating the timing expression.',
+                    'tooltip' => 'Choose the time zone to use when evaluating the timing expression.',
                 ),
                 'multiple'    => false,
                 'empty_value' => 'mautic.user.user.form.defaulttimezone',
