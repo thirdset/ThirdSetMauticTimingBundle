@@ -75,10 +75,10 @@ class Timing
 
         $builder->setTable('campaign_events_timing')
             ->setCustomRepositoryClass('MauticPlugin\ThirdSetMauticTimingBundle\Entity\TimingRepository');
-
+        
         $builder->createOneToOne('event', 'Mautic\CampaignBundle\Entity\Event')
-            ->addJoinColumn('event_id', 'id')
             ->isPrimaryKey()
+            ->addJoinColumn('event_id', 'id', false, true, 'CASCADE')            
             ->build();
 
         $builder->createField('expression', 'string')
