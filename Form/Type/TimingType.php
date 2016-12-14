@@ -74,7 +74,7 @@ class TimingType extends AbstractType
                     'tooltip' => 'Choose the time zone to use when evaluating the timing expression.',
                 ),
                 'multiple'    => false,
-                'empty_value' => 'mautic.user.user.form.defaulttimezone',
+                'placeholder' => 'mautic.user.user.form.defaulttimezone',
                 'required'    => false,
             )
         );
