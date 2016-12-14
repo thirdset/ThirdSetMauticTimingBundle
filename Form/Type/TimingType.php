@@ -67,7 +67,7 @@ class TimingType extends AbstractType
         ]);
 
         //add the "Add the timezone" field
-        $builder->add('timezone', 'timezone', array(
+        $builder->add('timezone', 'Symfony\Component\Form\Extension\Core\Type\TimezoneType', array(
                 'label'      => 'Time Zone',
                 'attr'       => array(
                     'class'   => 'form-control',
