@@ -1,3 +1,7 @@
+= 1.0.1 =
+
+* Fixed a bug with adding timing settings to events in new campaigns.
+
 = 1.0.0 =
 
 * Initial release.
