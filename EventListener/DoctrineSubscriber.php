@@ -12,9 +12,10 @@ namespace MauticPlugin\ThirdSetMauticTimingBundle\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
-
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\ParameterBag;
+
+use Mautic\CampaignBundle\Entity\Event;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing;
 
@@ -105,6 +106,7 @@ class DoctrineSubscriber implements EventSubscriber
      * Note: we access the db from within this function (instead of a model
      * class) to avoid circular references.
      * 
+     * @param LifecycleEventArgs $args
      * @param Event $event The campaign Event to attach the timing data to.
      * @param array $timingData An array of timing post data.
      */
