@@ -219,6 +219,85 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * @testdox isDue correctly returns true when the event doesn't have timing
+     * data.
+     *
+     * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::isDue
+     */
+    public function testIsDueCorrectlyReturnsTrueWhenEventDoesntHaveTimingData()
+    {   
+        //mock the Event
+        $event = $this->getMockBuilder('\Mautic\CampaignBundle\Entity\Event')
+                               ->disableOriginalConstructor()
+                               ->getMock();
+        
+        //mock the eventModel
+        $eventModel = $this->getMockBuilder('\Mautic\CampaignBundle\Model\EventModel')
+                               ->disableOriginalConstructor()
+                               ->getMock();
+        
+        //stub the eventModel->getEntity() function
+        $eventModel->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue($event));
+
+        //mock the timingModel
+        $timingModel = $this->getMockBuilder('\MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel')
+                               ->disableOriginalConstructor()
+                               ->getMock();
+        
+        //stub the timingModel->getEntity() function
+        $timingModel->expects($this->once())
+            ->method('getEntity')
+            ->will($this->returnValue(null));
+                
+        //create the timingHelper
+        $timingHelper = new TimingHelper(
+                            $eventModel,
+                            $timingModel
+                        );
+        
+        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead(null);
+        
+        //call the function
+        $isDue = $timingHelper->isDue(1, $lead, 'now');
+        
+        $this->assertTrue($isDue);
+    }
+    
+    /**
+     * @testdox isDue correctly returns true when the event doesn't have timing
+     * data.
+     *
+     * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::isDue
+     */
+    public function testIsDueCorrectlyReturnsTrueWhenExpressionIsEmpty()
+    {   
+        $expression = '';
+        $useContactTimezone = null;
+        $timezone = null;
+        
+        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->getMockTiming(
+                        $expression,
+                        $useContactTimezone,
+                        $timezone
+                    );
+        
+        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        $timingHelper = $this->getTimingHelper($timing);
+        
+        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead(null);
+        
+        //call the function
+        $isDue = $timingHelper->isDue(1, $lead, 'now');
+        
+        $this->assertTrue($isDue);
+    }
+    
+    /**
      * Helper function to get a TimingHelper for use by our tests.
      * @return TimingHelper Returns a TimingHelper for use by our tests.
      */
@@ -278,12 +357,12 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                                ->getMock();
         
         //stub the timing->getExpression() function
-        $timing->expects($this->once())
+        $timing->expects($this->any())
             ->method('getExpression')
             ->will($this->returnValue($expression));
         
         //stub the timing->getUseContactTimezone() function
-        $timing->expects($this->once())
+        $timing->expects($this->any())
             ->method('getUseContactTimezone')
             ->will($this->returnValue($useContactTimezone));
         

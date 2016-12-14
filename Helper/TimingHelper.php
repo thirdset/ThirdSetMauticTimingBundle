@@ -63,6 +63,16 @@ class TimingHelper
         /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->timingModel->getEntity($event);
         
+        //if there is no timing data for the event, just return true (isDue)
+        if($timing == null) {
+            return true;
+        }
+        
+        //if the expression is empty/null, just return true (isDue)
+        if(empty($timing->getExpression())) {
+            return true;
+        }
+        
         $cron = CronExpression::factory($timing->getExpression());
         
         $timezone = null;
