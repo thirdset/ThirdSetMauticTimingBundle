@@ -40,12 +40,12 @@ class TimingFormSubscriber implements EventSubscriberInterface
     /**
      * Constructor.
      * @param Session $session
-     * @param \Mautic\CampaignBundle\Entity\Event $event
+     * @param Event|null $event
      * @param TimingModel $timingModel
      */
     public function __construct(
                         Session $session,
-                        Event $event,
+                        Event $event = null,
                         TimingModel $timingModel
                     )
     {
@@ -78,7 +78,7 @@ class TimingFormSubscriber implements EventSubscriberInterface
         $data = $formEvent->getData();
         
         //if the timing isn't set, try to get it from the db.
-        if( ! isset($data['timing']['expression'])) {
+        if(( ! isset($data['timing']['expression'])) && ($this->event != null) ) {
 
             //retrieve the campaign event timing from the db.
             /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
