@@ -49,23 +49,23 @@ class CampaignEventSubscriber extends CommonSubscriber
     }
 
     /**
-     * Method to be applied to the kernel.controler event.  
-     * @param \MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent $event
-     * Note that this is the event system's event not the campaign event.
+     * Method to be applied to the 
+     * plugin.thirdset.timing.campaign_pre_event_execution event.  
+     * @param CampaignPreExecutionEvent $event
      */
     public function onPreEventExecution(CampaignPreExecutionEvent $event)
     {
-        /** @var $eventData array */
-        $eventData = $event->getEvent();
+        //if the eventTriggerDate is already set, just leave it alone.
+        if($event->getEventTriggerDate() == null) {
         
-        $eventId = $eventData['id'];
-        
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
-        $lead = $event->getLead();
-        
-        //if the event isn't due (according to its timing restrictions), abort execution
-        if( ! $this->timingHelper->isDue($eventId, $lead)) {
-            $event->abortExection(true);
+            $eventTriggerDate = $this->timingHelper->checkEventTiming(
+                                            $event->getEventData(), 
+                                            $event->getParentTriggeredDate(),
+                                            $event->allowNegative(),
+                                            $event->getLead()
+                                        );
+            
+            $event->setEventTriggerDate($eventTriggerDate);
         }
     }
 }

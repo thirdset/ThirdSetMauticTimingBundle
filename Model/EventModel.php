@@ -37,39 +37,31 @@ class EventModel extends \Mautic\CampaignBundle\Model\EventModel
         &$executedEventCount = 0,
         &$totalEventCount = 0
     ) {
-        //dispatch our custom event
-        $args = [
-                    'event' => $event,
-                    'lead'  => $lead,
-                ];
-        $preExecutionEvent = new CampaignPreExecutionEvent($args);
+        //dispatch our custom event and filter the $eventTriggerDate
+        $preExecutionEvent = new CampaignPreExecutionEvent(
+                                    $event,
+                                    $parentTriggeredDate,
+                                    $allowNegative,
+                                    $lead,
+                                    $eventTriggerDate
+                                 );
         $this->dispatcher->dispatch(TimingEvents::PRE_EVENT_EXECUTION, $preExecutionEvent);
-        unset($args);
         
-        //abort if directed by the event listeners
-        if($preExecutionEvent->isExecutionAborted()) {
-            $this->logger->debug(
-                'CAMPAIGN: Execution aborted for '.ucfirst($event['eventType']).' ID# '.$event['id'].' for contact ID# '.$lead->getId() . ' due to timing rules.'
-            );
-            unset($event);
-            
-            return false;
-        } else {
+        $eventTriggerDate = $preExecutionEvent->getEventTriggerDate();
         
-            //call the parent method        
-            return parent::executeEvent(
-                $event,
-                $campaign,
-                $lead,
-                $eventSettings,
-                $allowNegative,
-                $parentTriggeredDate,
-                $eventTriggerDate,
-                $logExists,
-                $evaluatedEventCount,
-                $executedEventCount,
-                $totalEventCount
-            );
-        }
+        //call the parent method        
+        return parent::executeEvent(
+            $event,
+            $campaign,
+            $lead,
+            $eventSettings,
+            $allowNegative,
+            $parentTriggeredDate,
+            $eventTriggerDate,
+            $logExists,
+            $evaluatedEventCount,
+            $executedEventCount,
+            $totalEventCount
+        );
     }
 }

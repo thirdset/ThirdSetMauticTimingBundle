@@ -18,11 +18,21 @@ use Mautic\LeadBundle\Entity\Lead;
  */
 class CampaignPreExecutionEvent extends Event
 { 
-
     /**
      * @var array
      */
-    protected $event;
+    protected $eventData;
+    
+    /**
+     * @var \DateTime;
+     */
+    protected $parentTriggeredDate;
+    
+    /**
+     *
+     * @var boolean 
+     */
+    protected $allowNegative;
     
     /**
      * @var \Mautic\LeadBundle\Entity\Lead;
@@ -31,31 +41,58 @@ class CampaignPreExecutionEvent extends Event
     
     /**
      *
-     * @var boolean 
+     * @var \DateTime|boolean 
      */
-    protected $abortExecution;
+    protected $eventTriggerDate;
 
 
     /**
-     * Construct.
-     *
-     * @param $args
+     * Constructor.
+     * @param array $eventData An array of campaign Event data.
+     * @param \DateTime|null $parentTriggeredDate
+     * @param bool $allowNegative
+     * @param \DateTime|bool $eventTriggerDate The current eventTriggerDate
      */
-    public function __construct($args)
+    public function __construct(
+                        $eventData,
+                        \DateTime $parentTriggeredDate = null,
+                        $allowNegative = false,
+                        Lead $lead,
+                        $eventTriggerDate = null
+                    )
     {
-        $this->event = $args['event'];
-        $this->lead = $args['lead'];
-        
-        $this->abortExecution = false;
+        $this->eventData = $eventData;
+        $this->parentTriggeredDate = $parentTriggeredDate;
+        $this->allowNegative = $allowNegative;
+        $this->lead = $lead;
+        $this->eventTriggerDate = $eventTriggerDate;
     }
 
     /**
      * Get the campaign event's data array.
      * @return array An array of data for the campaign event. 
      */
-    public function getEvent()
+    public function getEventData()
     {
-        return $this->event;
+        return $this->eventData;
+    }
+    
+    /**
+     * Get the trigger \DateTime of the campaign Event's parent.
+     * @return \DateTime The trigger \DateTime of the campaign Event's parent.
+     */
+    public function getParentTriggeredDate()
+    {
+        return $this->parentTriggeredDate;
+    }
+    
+    /**
+     * Whether or not to allow negative (for 'no' decission paths).
+     * @return boolean Returns whether or not to allow negative.
+     */
+    public function allowNegative()
+    {
+        return $this->allowNegative;
     }
     
     /**
@@ -69,21 +106,24 @@ class CampaignPreExecutionEvent extends Event
     }
     
     /**
-     * Get whenther or not execution should be aborted.
-     * @return boolean
+     * Get the campaign Event trigger DateTime if in the future, or true if the
+     * campaign Event is already due.
+     * @return \DateTime|boolean The campaign Event trigger \DateTime if in the
+     * future or true if the campaign Event is already due.
      */
-    public function isExecutionAborted()
+    public function getEventTriggerDate()
     {
-        return $this->abortExecution;
+        return $this->eventTriggerDate;
     }
     
     /**
-     * Set whether or not execution should be aborted.
-     * @param boolean $abortExecution
+     * Sets the campaign EventTriggerDate to allow for filtering the value.
+     * @param \DateTime|boolean $eventTriggerDate The campaign Event trigger 
+     * \DateTime if in the future or true if the campaign Event is already due.
      */
-    public function abortExection($abortExecution)
+    public function setEventTriggerDate($eventTriggerDate)
     {
-        $this->abortExecution = $abortExecution;
+        $this->eventTriggerDate = $eventTriggerDate;
     }
 
 }

@@ -9,9 +9,11 @@
 
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Helper;
 
+use Mautic\CampaignBundle\Entity\Event;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\CampaignBundle\Model\EventModel;
 
+use MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing;
 use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
@@ -20,6 +22,8 @@ use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
  * Class TimingHelper.
  *
  * @package ThirdSetMauticTimingBundle
+ * @since 1.0
+ * @todo Add unit testing
  */
 class TimingHelper
 {
@@ -43,36 +47,146 @@ class TimingHelper
         $this->eventModel = $eventModel;
         $this->timingModel = $timingModel;
     }
-
+    
     /**
-     * Helper method that reviews the timing settings for the passed event and
-     * determines if the event is due to be executed for the given Lead.
-     * @param integer $eventId The id of the Campaign Event to use for the
-     * evaluation.
+     * Our custom checkEventTiming function.
+     * @param array $eventData An array of event data.
+     * @param \DateTime|null $parentTriggeredDate
+     * @param boolean $allowNegative
      * @param Mautic\LeadBundle\Entity\Lead The Lead to use for the evaluation.
      * @param string $initNowStr A string for calulating 'now'.  This is used
      * for testing and can usually be left off.
-     * @return boolean Returns true if the event is due, otherwise, returns
-     * false.
+     * @return \DateTime|boolean|null Returns one of:
+     *  * The DateTime when the event should be triggered (if in the future)
+     *  * true if the event is due now
+     *  * false if there is an error/issue.
+     *  * null if we want to pass through and let it be determined by core
+     *    methods.
      */
-    public function isDue($eventId, Lead $lead, $initNowStr = 'now')
-    {   
+    public function checkEventTiming(
+                        $eventData, 
+                        \DateTime $parentTriggeredDate = null,
+                        $allowNegative = false,
+                        Lead $lead,
+                        $initNowStr = 'now'
+                    )
+    {           
+        $eventId = $eventData['id'];
+        
         /* @var $timing \Mautic\CampaignBundle\Entity\Event */
         $event = $this->eventModel->getEntity($eventId);
         
         /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->timingModel->getEntity($event);
         
-        //if there is no timing data for the event, just return true (isDue)
+        //if there is no timing data for the event, return null (hand off to core methods)
         if($timing == null) {
-            return true;
+            return null;
         }
         
-        //if the expression is empty/null, just return true (isDue)
+        //if the timing expression is empty/null, return null (hand off to core methods)
         if(empty($timing->getExpression())) {
-            return true;
+            return null;
         }
         
+        //get the dueDate (according to the standard Mautic settings)
+        $dueDate = $this->getDueDate(
+                            $eventData,
+                            $parentTriggeredDate,
+                            $allowNegative,
+                            $initNowStr
+                    );
+        
+        //get the nextRunDate (next time that the trigger can be run according
+        // to our extended timing rules).
+        $nextRunDate = $this->getNextRunDate(
+                                $timing,
+                                $lead,
+                                $dueDate->format('Y-m-d H:i:s')
+                        );
+        
+        $now = new \DateTime($initNowStr);
+        
+        if($nextRunDate <= $now) {
+            return true; //trigger now
+        } else {
+            return $nextRunDate; //schedule
+        }
+    }
+
+    /**
+     * Most of the logic here is copy/pasta from the 
+     * Mautic\CampaignBundle\Model\EventModel->checkEventTiming function
+     *
+     * @param array $action An array of data from an action Event.
+     * @param \DateTime|null $parentTriggeredDate 
+     * @param boolean $allowNegative
+     * @param string $initNowStr A string for calulating 'now'.  This is used
+     * for testing and can usually be left off.
+     * @return DateTime|null
+     */
+    private function getDueDate(
+                            $action, 
+                            \DateTime $parentTriggeredDate = null,
+                            $allowNegative = false,
+                            $initNowStr = 'now'
+    ) {
+        if ($action['decisionPath'] == 'no' && !$allowNegative) {
+            return null;
+        } 
+        
+        //default the dueDate to now.
+        $dueDate = new \DateTime($initNowStr);
+        
+        if ($action['triggerMode'] == 'interval') {    
+            $negate = ($action['decisionPath'] == 'no' && $allowNegative);
+            $dueDate = $negate ? clone $parentTriggeredDate : new \DateTime();
+
+            $interval = $action['triggerInterval'];
+            $unit     = strtoupper($action['triggerIntervalUnit']);
+
+            switch ($unit) {
+                case 'Y':
+                case 'M':
+                case 'D':
+                    $dt = "P{$interval}{$unit}";
+                    break;
+                case 'I':
+                    $dt = "PT{$interval}M";
+                    break;
+                case 'H':
+                case 'S':
+                    $dt = "PT{$interval}{$unit}";
+                    break;
+            }
+
+            $dv = new \DateInterval($dt);
+            $dueDate->add($dv);
+
+        } elseif($action['triggerMode'] == 'date') {
+            $dueDate = $action['triggerDate'];
+        }
+            
+        return $dueDate;
+    }
+    
+    /**
+     * Gets the next run date based on timing rules.
+     * @param Timing $timing The timing rules object to use for the calculation
+     * this should have been pre-screened for an expression, etc.
+     * @param Mautic\LeadBundle\Entity\Lead The Lead to use for the evaluation.
+     * @param string $initNowStr A string for calulating 'now'. This can be used
+     * to find the nextRunDate based on some future now date.
+     * @return \DateTime|boolean Returns the DateTime to trigger the event (if
+     * in the future), true if the event is due now or false if there is an
+     * error/issue.
+     */
+    public function getNextRunDate(
+                        Timing $timing, 
+                        Lead $lead, 
+                        $initNowStr = 'now'
+                    )
+    {   
         $cron = CronExpression::factory($timing->getExpression());
         
         $timezone = null;
@@ -105,7 +219,8 @@ class TimingHelper
         //convert $now to a string (otherwise the Cron class will convert the date back to the default timezone)
         $nowStr = $now->format('Y-m-d H:i:s');
         
-        //if the event isn't due (according to it's cron timing restrictions), abort execution
-        return $cron->isDue($nowStr);
+        $nextRunDate = $cron->getNextRunDate($nowStr);
+        
+        return $nextRunDate;
     }
 }
