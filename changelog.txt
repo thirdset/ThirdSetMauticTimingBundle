@@ -1,3 +1,8 @@
+= 1.0.2 =
+
+* Fixed a bug that was throwing errors in the log when a new action event form for a new campaign was opened.
+* Events with missing or empty timing data now bypassing timing rules.
+
 = 1.0.1 =
 
 * Fixed a bug with adding timing settings to events in new campaigns.
