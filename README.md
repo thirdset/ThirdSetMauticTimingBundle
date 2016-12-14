@@ -57,7 +57,7 @@ This plugin includes a suite of unit tests. You will need to have PHPUnit instal
 
 ```
 apk update && apk add ca-certificates && update-ca-certificates && apk add openssl
-/usr/bin/wget https://phar.phpunit.de/phpunit.phar && mv phpunit.phar /usr/bin/phpunit && chmod 755 /usr/bin/phpunit
+/usr/bin/wget https://phar.phpunit.de/phpunit.phar -O /usr/bin/phpunit && chmod 755 /usr/bin/phpunit
 ```
 
 #### Running the Tests
