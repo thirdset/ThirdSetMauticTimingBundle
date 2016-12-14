@@ -77,12 +77,18 @@ class EventTypeExtension extends AbstractTypeExtension
                     'required'    => false,
                 )
             );
+            //var_dump($options['data']); //For debugging (goes to AJAX response).
             
-            $eventId = $options['data']['id'];
-            
-            /* @var $event \Mautic\CampaignBundle\Entity\Event */
-            $event = $this->eventModel->getEntity($eventId);
-            
+            //Get the event (or use null) if this is a new Campaign
+            $event = null;
+            $update = (!empty($options['data']['id']) && strpos($options['data']['id'], 'new') === false) ? true : false;
+            if($update) {
+                $eventId = $options['data']['id'];
+
+                /* @var $event \Mautic\CampaignBundle\Entity\Event */
+                $event = $this->eventModel->getEntity($eventId);
+            }
+
             //add timing form event subscriber
             $builder->addEventSubscriber(
                         new TimingFormSubscriber(
@@ -91,7 +97,6 @@ class EventTypeExtension extends AbstractTypeExtension
                                 $this->timingModel
                         )
                     );
-            
         }
     }
     

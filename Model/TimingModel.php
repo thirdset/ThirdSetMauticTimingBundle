@@ -46,7 +46,7 @@ class TimingModel extends CommonFormModel
      *
      * @return null|Timing
      */
-    public function getEntity(Event $event)
+    public function getEntity(Event $event = null)
     {
         if ($event === null) {
             return new Timing($event);

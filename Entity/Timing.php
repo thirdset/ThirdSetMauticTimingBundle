@@ -46,7 +46,7 @@ class Timing
 
     /**
      * Constructor.
-     * @param Event $event The event that the Timing is for.
+     * @param Event $event|null The event that the Timing is for.
      * @param string|null $expression The cron expression for the Timing.
      * @param boolean|null $useContactTimezone Whether or not to use the 
      * contact's timezone.
@@ -54,7 +54,7 @@ class Timing
      * (ex: "America/Los_Angeles")
      */
     public function __construct(
-                        Event $event,
+                        Event $event = null,
                         $expression = null,
                         $useContactTimezone = null,
                         $timezone = null
