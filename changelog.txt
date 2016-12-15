@@ -1,3 +1,8 @@
+= 1.1.0 =
+
+* Now using the timing fields to schedule events (rather than to abort execution as was done in previous versions).
+* Added a 'Use Work Hours' link next to the Expression field.
+
 = 1.0.2 =
 
 * Fixed a bug that was throwing errors in the log when a new action event form for a new campaign was opened.
