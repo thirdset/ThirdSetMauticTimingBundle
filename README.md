@@ -4,7 +4,10 @@
 The ThirdSetMauticTimingBundle is a [Mautic](http://www.mautic.org) plugin that allows you to set a cron timing expression on any Campaign action events (such as a "Send Email" action).
 
 ### Purpose
-For example, you could add a cron expression that only allows sending on weekdays during working hours in New York. When Mautic goes to perform the action, the cron expression is evaluated against the current time.  The email is only sent if the current time matches the cron expression.  If it doesn't match, Mautic will try it again (during successive runs of the trigger action) until it matches.
+For example, you could add a cron expression that only allows sending on weekdays during working hours in New York.
+
+### Compatibility
+This plugin has been tested with up to v2.2.1 of Mautic.
 
 ### Features
  * Adds the full ability of cron syntax to your campaign actions allowing you to only send emails at certain times.
