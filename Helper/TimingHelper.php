@@ -104,6 +104,9 @@ class TimingHelper
     }
 
     /**
+     * Private helper function to calculate the due date based on the standard
+     * Mautic timing logic/fields.
+     * 
      * Most of the logic here is copy/pasta from the 
      * Mautic\CampaignBundle\Model\EventModel->checkEventTiming function
      *
@@ -114,7 +117,7 @@ class TimingHelper
      * for testing and can usually be left off.
      * @return DateTime|null
      */
-    public function getDueDate(
+    private function getDueDate(
                             $action, 
                             \DateTime $parentTriggeredDate = null,
                             $allowNegative = false,
@@ -160,7 +163,8 @@ class TimingHelper
     }
     
     /**
-     * Gets the next run date based on timing rules.
+     * Private helper function that gets the next run date based on our timing 
+     * rules.
      * @param Timing $timing The timing rules object to use for the calculation
      * this should have been pre-screened for an expression, etc.
      * @param Mautic\LeadBundle\Entity\Lead The Lead to use for the evaluation.
@@ -170,7 +174,7 @@ class TimingHelper
      * in the future), true if the event is due now or false if there is an
      * error/issue.
      */
-    public function getNextRunDate(
+    private function getNextRunDate(
                         Timing $timing, 
                         Lead $lead, 
                         $initNowStr = 'now'
