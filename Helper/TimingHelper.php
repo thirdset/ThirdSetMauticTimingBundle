@@ -23,28 +23,20 @@ use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
  *
  * @package ThirdSetMauticTimingBundle
  * @since 1.0
- * @todo Add unit testing
  */
 class TimingHelper
-{
-
-    /* @var $eventModel \Mautic\CampaignBundle\Model\EventModel */
-    private $eventModel;
-    
+{   
     /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
     private $timingModel;
     
     /**
      * Constructor.
-     * @param EventModel $eventModel
      * @param TimingModel $timingModel
      */
     public function __construct(
-                EventModel $eventModel,
                 TimingModel $timingModel
             )
     {
-        $this->eventModel = $eventModel;
         $this->timingModel = $timingModel;
     }
     
@@ -73,11 +65,8 @@ class TimingHelper
     {           
         $eventId = $eventData['id'];
         
-        /* @var $timing \Mautic\CampaignBundle\Entity\Event */
-        $event = $this->eventModel->getEntity($eventId);
-        
         /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
-        $timing = $this->timingModel->getEntity($event);
+        $timing = $this->timingModel->getById($eventId);
         
         //if there is no timing data for the event, return null (hand off to core methods)
         if($timing == null) {
@@ -125,7 +114,7 @@ class TimingHelper
      * for testing and can usually be left off.
      * @return DateTime|null
      */
-    private function getDueDate(
+    public function getDueDate(
                             $action, 
                             \DateTime $parentTriggeredDate = null,
                             $allowNegative = false,
@@ -212,14 +201,17 @@ class TimingHelper
             $timezone = date_default_timezone_get();
         }
         
-        //calculate now (offset by the timezone)
+        //calculate 'now' (offset by timezone)
         $now = new \DateTime($initNowStr);
         $now->setTimezone(new \DateTimeZone($timezone));
         
-        //convert $now to a string (otherwise the Cron class will convert the date back to the default timezone)
-        $nowStr = $now->format('Y-m-d H:i:s');
-        
-        $nextRunDate = $cron->getNextRunDate($nowStr);
+        //calculate the next run date
+        //see https://github.com/mtdowling/cron-expression/blob/master/src/Cron/CronExpression.php
+        $nextRunDate = $cron->getNextRunDate(
+                                    $now, //current time
+                                    0, //Number of matches to skip before returning a matching next run date.
+                                    true //allowCurrentDate: Set to TRUE to return the current date if it matches the cron expression.
+                                );
         
         return $nextRunDate;
     }

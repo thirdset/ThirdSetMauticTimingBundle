@@ -40,7 +40,6 @@ return array(
             'plugin.thirdset.timing.timing_helper' => array(
                 'class'     => 'MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper',
                 'arguments' => [
-                    'mautic.campaign.model.event',
                     'plugin.thirdset.timing.event_timing_model',
                 ]
             ),

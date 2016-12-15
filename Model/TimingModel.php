@@ -60,5 +60,17 @@ class TimingModel extends CommonFormModel
 
         return $entity;
     }
+    
+    /**
+     * Get a specific Timing entity.
+     * @param $id The id of the Timing entity that you want to get.
+     * @return Timing
+     */
+    public function getById($id)
+    {
+        $entity = parent::getEntity($id);
+
+        return $entity;
+    }
 
 }
