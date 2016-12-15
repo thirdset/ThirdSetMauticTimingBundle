@@ -131,8 +131,9 @@ class TimingHelper
         $dueDate = new \DateTime($initNowStr);
         
         if ($action['triggerMode'] == 'interval') {    
-            $negate = ($action['decisionPath'] == 'no' && $allowNegative);
-            $dueDate = $negate ? clone $parentTriggeredDate : new \DateTime();
+            if($action['decisionPath'] == 'no' && $allowNegative) {
+                $dueDate = clone $parentTriggeredDate;
+            }
 
             $interval = $action['triggerInterval'];
             $unit     = strtoupper($action['triggerIntervalUnit']);

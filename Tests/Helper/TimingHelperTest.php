@@ -351,6 +351,106 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
     }
     
     /**
+     * @testdox checkEventTiming returns expected DateTime when interval
+     * settings are set.
+     *
+     * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::checkEventTiming
+     */
+    public function testCheckEventTimingReturnsExpectedDateTimeWhenTriggerModeIsInterval()
+    {
+        //the time and expression would return false, but the offset should 
+        //cause them to return true instead.
+        $mockNow = '2016-01-01 08:00:00';
+        $expression = '* 09-19 * * *';
+        $useContactTimezone = false;
+        $contactTimezone = null;
+        $triggerMode = 'interval';
+        $triggerInterval = 1;
+        $triggerIntervalUnit = 'D';
+        $expected = new \DateTime('2016-01-2 09:00:00');
+        
+        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->getMockTiming(
+                        $expression,
+                        $useContactTimezone,
+                        null
+                    );
+        
+        $eventData = array();
+        $eventData['id'] = 1;
+        $eventData['triggerMode'] = $triggerMode;
+        $eventData['triggerInterval'] = $triggerInterval;
+        $eventData['triggerIntervalUnit'] = $triggerIntervalUnit;
+        
+        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        $timingHelper = $this->getTimingHelper($timing);
+        
+        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead($contactTimezone);
+        
+        //call the function
+        $eventTriggerDate = $timingHelper->checkEventTiming(
+                                                $eventData,
+                                                null,
+                                                false,
+                                                $lead, 
+                                                $mockNow
+                                            );
+        
+        //Assert that the expected DateTime is returned
+        $this->assertEquals($expected, $eventTriggerDate);
+    }
+    
+    /**
+     * @testdox checkEventTiming returns expected DateTime when interval
+     * settings are set.
+     *
+     * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::checkEventTiming
+     */
+    public function testCheckEventTimingReturnsExpectedDateTimeWhenTriggerModeIsDate()
+    {
+        //the time and expression would return false, but the offset should 
+        //cause them to return true instead.
+        $mockNow = '2016-01-01 08:00:00';
+        $expression = '* 09-19 * * *';
+        $useContactTimezone = false;
+        $contactTimezone = null;
+        $triggerMode = 'date';
+        $triggerDate = new \DateTime('2016-01-05 09:00:00');
+        $expected = new \DateTime('2016-01-05 09:00:00');
+        
+        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->getMockTiming(
+                        $expression,
+                        $useContactTimezone,
+                        null
+                    );
+        
+        $eventData = array();
+        $eventData['id'] = 1;
+        $eventData['triggerMode'] = $triggerMode;
+        $eventData['triggerDate'] = $triggerDate;
+        
+        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        $timingHelper = $this->getTimingHelper($timing);
+        
+        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead($contactTimezone);
+        
+        //call the function
+        $eventTriggerDate = $timingHelper->checkEventTiming(
+                                                $eventData,
+                                                null,
+                                                false,
+                                                $lead, 
+                                                $mockNow
+                                            );
+        
+        //Assert that the expected DateTime is returned
+        $this->assertEquals($expected, $eventTriggerDate);
+    }
+    
+    /**
      * Helper function to get a TimingHelper for use by our tests.
      * @return TimingHelper Returns a TimingHelper for use by our tests.
      */
