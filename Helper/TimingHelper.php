@@ -187,7 +187,7 @@ class TimingHelper
         
         //attempt to use the contact's timezone (if directed)
         if($timing->getUseContactTimezone()) {
-            if ($lead->getIpAddresses()->first()) {
+            if( ! $lead->getIpAddresses()->isEmpty()) {
                 /** @var $ipDetails array */
                 $ipDetails = $lead->getIpAddresses()->first()->getIpDetails();
                 if( ! empty($ipDetails['timezone'])) {
