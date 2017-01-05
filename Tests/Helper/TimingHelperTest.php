@@ -543,9 +543,9 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
             ->method('getExpression')
             ->will($this->returnValue($expression));
         
-        //stub the timing->getUseContactTimezone() function
+        //stub the timing->useContactTimezone() function
         $timing->expects($this->any())
-            ->method('getUseContactTimezone')
+            ->method('useContactTimezone')
             ->will($this->returnValue($useContactTimezone));
         
         //stub the timing->getTimezone() function

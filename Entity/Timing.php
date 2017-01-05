@@ -176,7 +176,7 @@ class Timing
      * Gets whether or not to use the contact's timezone.
      * @return boolean Returns whether or not to use the contact's timezone.
      */
-    public function getUseContactTimezone()
+    public function useContactTimezone()
     {
         return $this->useContactTimezone;
     }

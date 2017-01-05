@@ -86,7 +86,7 @@ class TimingFormSubscriber implements EventSubscriberInterface
 
             //add the campaign event timing to the data.
             $data['timing']['expression'] = $timing->getExpression();
-            $data['timing']['use_contact_timezone'] = $timing->getUseContactTimezone();
+            $data['timing']['use_contact_timezone'] = $timing->useContactTimezone();
             $data['timing']['timezone'] = $timing->getTimezone();
 
             //set our modified data as the data to be sent to the form
