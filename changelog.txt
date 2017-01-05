@@ -1,3 +1,7 @@
+= 1.1.1 =
+
+* Fixed a bug that occurred when attempting to use a contact's timezone when their ip isn't set (@sageeki).
+
 = 1.1.0 =
 
 * Now using the timing fields to schedule events (rather than to abort execution as was done in previous versions).
