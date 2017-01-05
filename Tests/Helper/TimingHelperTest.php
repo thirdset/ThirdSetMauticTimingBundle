@@ -591,7 +591,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         }
         
         //stub the lead->getIpAddresses() function
-        $lead->expects($this->atLeastOnce())
+        $lead->expects($this->any())
             ->method('getIpAddresses')
             ->will($this->returnValue($ipAddresses));
         
