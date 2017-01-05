@@ -9,6 +9,8 @@
 
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Tests\Helper;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing;
 use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
 
@@ -183,6 +185,49 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         
         $this->assertTrue($eventTriggerDate instanceof \DateTime);
     }
+    
+    /**
+     * @testdox checkEventTiming correctly returns a DateTime when event tries
+     * to use the leads timezone but it isn't known.
+     *
+     * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::checkEventTiming
+     */
+    public function testCheckEventTimingCorrectlyReturnsDateTimeWhenContactsTimezoneIsntKnown()
+    {
+        //the time and expression would return false, but the offset should 
+        //cause them to return true instead.
+        $mockNow = '2016-01-01 10:00:00';
+        $expression = '* 01-06 * * *';
+        $useContactTimezone = true;
+        
+        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->getMockTiming(
+                        $expression,
+                        $useContactTimezone
+                    );
+        
+        $eventData = array();
+        $eventData['id'] = 1;
+        
+        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        $timingHelper = $this->getTimingHelper($timing);
+        
+        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead();
+        
+        //call the function
+        $eventTriggerDate = $timingHelper->checkEventTiming(
+                                                $eventData,
+                                                null,
+                                                false,
+                                                $lead, 
+                                                $mockNow
+                                            );
+        
+        $this->assertTrue($eventTriggerDate instanceof \DateTime);
+    }
+    
+    
     
     /**
      * @testdox checkEventTiming correctly returns true when the *Timing's* time
@@ -538,13 +583,17 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                 ->method('getIpDetails')
                 ->will($this->returnValue($ipDetails));
 
-            $ipAddresses = new \Doctrine\Common\Collections\ArrayCollection(array($ipAddress));
+            $ipAddresses = new ArrayCollection(array($ipAddress));
 
-            //stub the lead->getIpAddresses() function
-            $lead->expects($this->atLeastOnce())
-                ->method('getIpAddresses')
-                ->will($this->returnValue($ipAddresses));
+        } else {
+            //if the lead's ip isn't known an empty ArrayCollection is returned.
+            $ipAddresses = new ArrayCollection();
         }
+        
+        //stub the lead->getIpAddresses() function
+        $lead->expects($this->atLeastOnce())
+            ->method('getIpAddresses')
+            ->will($this->returnValue($ipAddresses));
         
         return $lead;
     }
