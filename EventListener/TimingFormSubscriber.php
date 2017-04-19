@@ -82,7 +82,7 @@ class TimingFormSubscriber implements EventSubscriberInterface
 
             //retrieve the campaign event timing from the db.
             /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
-            $timing = $this->timingModel->getEntity($this->event);
+            $timing = $this->timingModel->getTimingForEvent($this->event);
 
             //add the campaign event timing to the data.
             $data['timing']['expression'] = $timing->getExpression();
