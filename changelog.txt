@@ -1,3 +1,9 @@
+= 1.1.2 =
+
+* Fixed a compatibility issue with Mautic 2.7.1.
+* Updated the README to reflect that the plugin has been tested with up to Mautic 2.7.1.
+* Updated the README with info regarding how to manually update the database (if necessary).
+
 = 1.1.1 =
 
 * Fixed a bug that occurred when attempting to use a contact's timezone when their ip isn't set (@sageeki).
