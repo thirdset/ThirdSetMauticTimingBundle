@@ -23,6 +23,12 @@ This plugin has been tested with up to v2.2.1 of Mautic.
 3. In the Mautic GUI, go to the gear and then to Plugins.
 4. Click the down arrow in the top right and select "Install/Upgrade Plugins"
 5. You should now see the Timing plugin in your list of plugins.
+6. Run the following console commands to ensure that the database was updated:
+
+```
+php app/console doctrine:schema:update --dump-sql
+php app/console doctrine:schema:update --force
+```
 
 ## [Usage](id:usage)
 
