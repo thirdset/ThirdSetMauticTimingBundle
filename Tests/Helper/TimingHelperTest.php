@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     ThirdSetMauticTimingBundle
- * @copyright   2016 Third Set Productions. All rights reserved.
+ * @copyright   2017 Third Set Productions. All rights reserved.
  * @author      Third Set Productions
  * @link        http://www.thirdset.com
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -33,7 +33,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $useContactTimezone = false;
         $contactTimezone = null;
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone
@@ -42,10 +42,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -74,7 +74,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $useContactTimezone = false;
         $contactTimezone = null;
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone
@@ -83,10 +83,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -116,7 +116,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $useContactTimezone = true;
         $contactTimezone = 'America/New_York'; // -5
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone
@@ -125,10 +125,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -159,7 +159,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $useContactTimezone = true;
         $contactTimezone = 'America/New_York'; // -5
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone
@@ -168,10 +168,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -200,7 +200,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $expression = '* 01-06 * * *';
         $useContactTimezone = true;
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone
@@ -209,10 +209,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead();
         
         //call the function
@@ -245,7 +245,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $timezone = 'America/New_York'; // -5
         $contactTimezone = null;
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone,
@@ -255,10 +255,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -289,7 +289,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $timezone = 'America/New_York'; // -5
         $contactTimezone = null;
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone,
@@ -299,10 +299,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = 1;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -374,13 +374,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                         $timezone
                     );
         
-        $eventData = array();
-        $eventData['id'] = 1;
-        
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead(null);
         
         //call the function
@@ -390,6 +387,50 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                                                 false,
                                                 $lead,
                                                 'now'
+                                            );
+        
+        $this->assertNull($eventTriggerDate);
+    }
+    
+    /**
+     * @testdox checkEventTiming correctly returns null when the decision path ==
+     * 'no' and negatives are not allowed.
+     *
+     * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::checkEventTiming
+     */
+    public function testCheckEventTimingCorrectlyReturnsNullDecisionPathIsNoAndNotAllowNegative()
+    {   
+        $mockNow = '2016-01-01 10:00:00';
+        $expression = '* 09-19 * * *';
+        $useContactTimezone = false;
+        $timezone = null;
+        
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->getMockTiming(
+                        $expression,
+                        $useContactTimezone,
+                        $timezone
+                    );
+        
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        $timingHelper = $this->getTimingHelper($timing);
+        
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead(null);
+        
+        $eventData = array();
+        $eventData['id'] = 1;
+        $eventData['decisionPath'] = 'no';
+        
+        $allowNegative = false;
+        
+        //call the function
+        $eventTriggerDate = $timingHelper->checkEventTiming(
+                                                $eventData,
+                                                null,
+                                                $allowNegative,
+                                                $lead,
+                                                $mockNow
                                             );
         
         $this->assertNull($eventTriggerDate);
@@ -414,7 +455,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $triggerIntervalUnit = 'D';
         $expected = new \DateTime('2016-01-2 09:00:00');
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone,
@@ -427,10 +468,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData['triggerInterval'] = $triggerInterval;
         $eventData['triggerIntervalUnit'] = $triggerIntervalUnit;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function
@@ -464,7 +505,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $triggerDate = new \DateTime('2016-01-05 09:00:00');
         $expected = new \DateTime('2016-01-05 09:00:00');
         
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone,
@@ -476,10 +517,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData['triggerMode'] = $triggerMode;
         $eventData['triggerDate'] = $triggerDate;
         
-        /** @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
         $timingHelper = $this->getTimingHelper($timing);
         
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
         
         //call the function

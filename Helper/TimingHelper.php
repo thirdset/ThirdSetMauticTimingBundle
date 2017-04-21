@@ -86,6 +86,11 @@ class TimingHelper
                             $initNowStr
                     );
         
+        //if the standard mautic logic returns null, return null (hand off to core methods)
+        if($dueDate == null) {
+            return null;
+        }
+        
         //get the nextRunDate (next time that the trigger can be run according
         // to our extended timing rules).
         $nextRunDate = $this->getNextRunDate(
