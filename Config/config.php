@@ -15,7 +15,7 @@
 return array(
     'name'        => 'Timing',
     'description' => 'Allows for processing actions only during certain times.',
-    'version'     => '1.1.3',
+    'version'     => '1.1.4',
     'author'      => 'Third Set Productions',
     'services'    => array(
         //MODELS
