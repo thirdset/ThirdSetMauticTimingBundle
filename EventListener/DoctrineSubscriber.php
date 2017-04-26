@@ -69,9 +69,12 @@ class DoctrineSubscriber implements EventSubscriber
             $campaignId = $postVars->get('campaign')['sessionId'];
             $modifiedEvents = $this->session->get('mautic.campaign.'.$campaignId.'.events.modified', []);
             $eventData = $modifiedEvents[$event->getTempId()];
-            $timingData = $eventData['timing'];
             
-            $this->saveTimingData($args, $event, $timingData);
+            if(isset($eventData['timing'])) {
+                $timingData = $eventData['timing'];
+            
+                $this->saveTimingData($args, $event, $timingData);
+            }
         }
         
     }
@@ -94,9 +97,12 @@ class DoctrineSubscriber implements EventSubscriber
             //get the timing data out of the session (for edit requests)
             $modifiedEvents = $this->session->get('mautic.campaign.'.$campaignId.'.events.modified', []);
             $eventData = $modifiedEvents[$event->getId()];
-            $timingData = $eventData['timing'];
             
-            $this->saveTimingData($args, $event, $timingData);
+            if(isset($eventData['timing'])) {
+                $timingData = $eventData['timing'];
+            
+                $this->saveTimingData($args, $event, $timingData);
+            }
         }
     }
     
