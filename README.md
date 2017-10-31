@@ -21,7 +21,9 @@ This plugin has been tested with up to v2.11.0 of Mautic.
 1. Download or clone this bundle into your Mautic `/plugins` folder.
 2. Manually delete your cache (app/cache/prod).
 3. In the Mautic GUI, go to the gear and then to Plugins.
-4. Click the down arrow in the top right and select "Install/Upgrade Plugins"
+4. Click the down arrow in the top right and select "Install/Upgrade Plugins". 
+   Note: newer versions of Mautic just have an "Install/Upgrade Plugins" button
+  (without the dropdown arrow).
 5. You should now see the Timing plugin in your list of plugins.
 6. Run the following console commands to ensure that the database was updated:
 
