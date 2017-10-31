@@ -7,7 +7,7 @@ The ThirdSetMauticTimingBundle is a [Mautic](http://www.mautic.org) plugin that 
 For example, you could add a cron expression that only allows sending on weekdays during working hours in New York.
 
 ### Compatibility
-This plugin has been tested with up to v2.7.1 of Mautic.
+This plugin has been tested with up to v2.11.0 of Mautic.
 
 ### Features
  * Adds the full ability of cron syntax to your campaign actions allowing you to only send emails at certain times.
