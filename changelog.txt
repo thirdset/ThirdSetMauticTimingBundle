@@ -1,3 +1,8 @@
+= 1.1.7 =
+
+* Updated the README to reflect that the plugin has been tested with up to Mautic 2.13.1.
+* Updated the README to reflect that the plugin has been tested with up to PHP 7.1.16.
+
 = 1.1.6 =
 
 * Updated the README to reflect that the plugin has been tested with up to Mautic 2.12.0.
