@@ -1,3 +1,8 @@
+= 1.2.0 =
+
+* Updated the plugin to hook Mautic 2.14's refactored campaign processing system. 
+* Updated the README to reflect that the plugin has been tested with up to Mautic 2.14.0.
+
 = 1.1.7 =
 
 * Updated the README to reflect that the plugin has been tested with up to Mautic 2.13.1.
