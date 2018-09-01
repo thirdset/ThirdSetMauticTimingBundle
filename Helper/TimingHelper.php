@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * @package     ThirdSetMauticTimingBundle
  * @copyright   2018 Third Set Productions.
  * @author      Third Set Productions

@@ -1,7 +1,8 @@
 <?php
-/**
+
+/*
  * @package     ThirdSetMauticTimingBundle
- * @copyright   2017 Third Set Productions. All rights reserved.
+ * @copyright   2018 Third Set Productions. All rights reserved.
  * @author      Third Set Productions
  * @link        http://www.thirdset.com
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -19,6 +20,48 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
  */
 class TimingHelperTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @testdox getExecutionDateTime returns the expected DateTime.
+     */
+    public function testGetExecutionDateTime()
+    {
+        $mockNow = '2016-01-01 08:00:00';
+        $expression = '* 09-19 * * *';
+        $useContactTimezone = false;
+        $contactTimezone = null;
+        $triggerMode = 'date';
+        $mauticExecutionDateTime = new \DateTime('2016-01-05 06:00:00');
+        $expected = new \DateTime('2016-01-05 09:00:00');
+        
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->getMockTiming(
+                        $expression,
+                        $useContactTimezone,
+                        null
+                    );
+        
+        /* @var $event \Mautic\CampaignBundle\Entity\Event */
+        $event = $this->getMockBuilder('\Mautic\CampaignBundle\Entity\Event')
+                               ->disableOriginalConstructor()
+                               ->getMock();
+        
+        /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+        $timingHelper = $this->getTimingHelper($timing);
+        
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
+        $lead = $this->getMockLead($contactTimezone);
+        
+        // Call the function.
+        $executionDateTime = $timingHelper->getExecutionDateTime(
+                                                $event,
+                                                $lead, 
+                                                $mauticExecutionDateTime,
+                                                $mockNow
+                                            );
+        
+        //Assert that the expected DateTime is returned
+        $this->assertEquals($expected, $executionDateTime);
+    }
     
     /**
      * @testdox checkEventTiming correctly returns true for a due simple expression.
@@ -599,7 +642,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
     
     /**
      * Helper function that returns a mock lead for use by our tests.
-     * @param string $timezone A timezone as a string (ex: "America/New_York"_
+     * @param string $timezone A timezone as a string (ex: "America/New_York")
      * @return Lead Returns a mock Lead.
      */
     private function getMockLead($timezone = null)
