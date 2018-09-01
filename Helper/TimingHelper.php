@@ -1,7 +1,7 @@
 <?php
 /**
  * @package     ThirdSetMauticTimingBundle
- * @copyright   2016 Third Set Productions. All rights reserved.
+ * @copyright   2018 Third Set Productions.
  * @author      Third Set Productions
  * @link        http://www.thirdset.com
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -11,7 +11,6 @@ namespace MauticPlugin\ThirdSetMauticTimingBundle\Helper;
 
 use Mautic\CampaignBundle\Entity\Event;
 use Mautic\LeadBundle\Entity\Lead;
-use Mautic\CampaignBundle\Model\EventModel;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing;
 use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
@@ -26,7 +25,7 @@ use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
  */
 class TimingHelper
 {   
-    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+    /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
     private $timingModel;
     
     /**
@@ -38,6 +37,42 @@ class TimingHelper
             )
     {
         $this->timingModel = $timingModel;
+    }
+    
+    /**
+     * Gets the executionDateTime with our extended timing rules applied.
+     * 
+     * This is used by Mautic 2.14 and up.
+     * 
+     * @param \Mautic\CampaignBundle\Entity\Event $event The Campaign Event to
+     * use for the evaluation.
+     * @param \Mautic\LeadBundle\Entity\Lead $contact The Contact to use for the
+     * evaluation.
+     * @param \DateTime $executionDateTime The executionDateTime that was
+     * determined by Mautic's standard timing rules.
+     * @param string $initNowStr A string for calulating 'now'. This can be used
+     * to find the nextRunDate based on some future now date.
+     * @return \DateTime Returns the executionDateTime.
+     */
+    public function getExecutionDateTime(
+                        Event $event,
+                        Lead $contact,
+                        \DateTime $executionDateTime,
+                        $initNowStr = 'now'
+                    )
+    {   
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        $timing = $this->timingModel->getById($event->getId());
+        
+        // Get the nextRunDate (next time that the trigger can be run according
+        // to our extended timing rules).
+        $nextRunDate = $this->getNextRunDate(
+                                $timing,
+                                $contact,
+                                $executionDateTime->format('Y-m-d H:i:s')
+                        );
+        
+        return $nextRunDate;
     }
     
     /**
