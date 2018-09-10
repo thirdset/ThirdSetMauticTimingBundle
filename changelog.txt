@@ -1,3 +1,8 @@
+= 1.2.1 =
+
+* Fixed a bug where the plugin was trying to apply timing rules to events that didn't have a timing expression (#17).
+* Fixed a backwards compatibility issue with Mautic < 2.14.
+
 = 1.2.0 =
 
 * Updated the plugin to hook Mautic 2.14's refactored campaign processing system. 
