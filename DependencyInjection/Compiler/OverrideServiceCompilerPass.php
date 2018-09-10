@@ -14,9 +14,9 @@ use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Class OverrideServiceCompilerPass.
- * 
+ *
  * This class has overrides for the Symfony services.
- * See: 
+ * See:
  *  * http://symfony.com/doc/2.8/bundles/override.html#services-configuration
  *  * http://symfony.com/doc/2.8/service_container/compiler_passes.html
  *
@@ -30,23 +30,28 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        $schedulerDefinition = null;
         
-        $schedulerDefinition = $container->getDefinition('mautic.campaign.scheduler');
+        try {
+            $schedulerDefinition = $container->getDefinition('mautic.campaign.scheduler');
+        } catch (\Exception $ex) {
+            //
+        }
         if($schedulerDefinition != null) {
             // Mautic >= v2.14.0
             $schedulerDefinition
                     ->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\Scheduler\EventScheduler')
                     ->addArgument(new Reference('plugin.thirdset.timing.timing_helper'));
-            
+
             $eventExecutionerDefinition = $container->getDefinition('mautic.campaign.event_executioner');
             $eventExecutionerDefinition->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\EventExecutioner');
-            
+
             $kickoffExecutionerDefinition = $container->getDefinition('mautic.campaign.executioner.kickoff');
             $kickoffExecutionerDefinition->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\KickoffExecutioner');
-            
+
             $realtimeExecutionerDefinition = $container->getDefinition('mautic.campaign.executioner.realtime');
             $realtimeExecutionerDefinition->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\RealTimeExecutioner');
-            
+
             $scheduledExecutionerDefinition = $container->getDefinition('mautic.campaign.executioner.scheduled');
             $scheduledExecutionerDefinition->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\ScheduledExecutioner');
         } else {
