@@ -25,10 +25,10 @@ use MauticPlugin\ThirdSetMauticTimingBundle\ThirdParty\Cron\CronExpression;
  * @since 1.0
  */
 class TimingHelper
-{   
+{
     /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
     private $timingModel;
-    
+
     /**
      * Constructor.
      * @param TimingModel $timingModel
@@ -39,12 +39,12 @@ class TimingHelper
     {
         $this->timingModel = $timingModel;
     }
-    
+
     /**
      * Gets the executionDateTime with our extended timing rules applied.
-     * 
+     *
      * This is used by Mautic 2.14 and up.
-     * 
+     *
      * @param \Mautic\CampaignBundle\Entity\Event $event The Campaign Event to
      * use for the evaluation.
      * @param \Mautic\LeadBundle\Entity\Lead $contact The Contact to use for the
@@ -61,10 +61,22 @@ class TimingHelper
                         \DateTime $executionDateTime,
                         $initNowStr = 'now'
                     )
-    {   
+    {
         /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->timingModel->getById($event->getId());
-        
+
+        // If there is no timing data for the event, return the received
+        // executionDateTime as is.
+        if($timing == null) {
+            return $executionDateTime;
+        }
+
+        // If the timing expression is empty/null, return the received
+        // executionDateTime as is.
+        if(empty($timing->getExpression())) {
+            return $executionDateTime;
+        }
+
         // Get the nextRunDate (next time that the trigger can be run according
         // to our extended timing rules).
         $nextRunDate = $this->getNextRunDate(
@@ -72,10 +84,10 @@ class TimingHelper
                                 $contact,
                                 $executionDateTime->format('Y-m-d H:i:s')
                         );
-        
+
         return $nextRunDate;
     }
-    
+
     /**
      * Our custom checkEventTiming function.
      * @param array $eventData An array of event data.
@@ -92,28 +104,28 @@ class TimingHelper
      *    methods.
      */
     public function checkEventTiming(
-                        $eventData, 
+                        $eventData,
                         \DateTime $parentTriggeredDate = null,
                         $allowNegative = false,
                         Lead $lead,
                         $initNowStr = 'now'
                     )
-    {           
+    {
         $eventId = $eventData['id'];
-        
+
         /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->timingModel->getById($eventId);
-        
+
         //if there is no timing data for the event, return null (hand off to core methods)
         if($timing == null) {
             return null;
         }
-        
+
         //if the timing expression is empty/null, return null (hand off to core methods)
         if(empty($timing->getExpression())) {
             return null;
         }
-        
+
         //get the dueDate (according to the standard Mautic settings)
         $dueDate = $this->getDueDate(
                             $eventData,
@@ -121,12 +133,12 @@ class TimingHelper
                             $allowNegative,
                             $initNowStr
                     );
-        
+
         //if the standard mautic logic returns null, return null (hand off to core methods)
         if($dueDate == null) {
             return null;
         }
-        
+
         //get the nextRunDate (next time that the trigger can be run according
         // to our extended timing rules).
         $nextRunDate = $this->getNextRunDate(
@@ -134,9 +146,9 @@ class TimingHelper
                                 $lead,
                                 $dueDate->format('Y-m-d H:i:s')
                         );
-        
+
         $now = new \DateTime($initNowStr);
-        
+
         if($nextRunDate <= $now) {
             return true; //trigger now
         } else {
@@ -147,31 +159,31 @@ class TimingHelper
     /**
      * Private helper function to calculate the due date based on the standard
      * Mautic timing logic/fields.
-     * 
-     * Most of the logic here is copy/pasta from the 
+     *
+     * Most of the logic here is copy/pasta from the
      * Mautic\CampaignBundle\Model\EventModel->checkEventTiming function
      *
      * @param array $action An array of data from an action Event.
-     * @param \DateTime|null $parentTriggeredDate 
+     * @param \DateTime|null $parentTriggeredDate
      * @param boolean $allowNegative
      * @param string $initNowStr A string for calulating 'now'.  This is used
      * for testing and can usually be left off.
      * @return DateTime|null
      */
     private function getDueDate(
-                            $action, 
+                            $action,
                             \DateTime $parentTriggeredDate = null,
                             $allowNegative = false,
                             $initNowStr = 'now'
     ) {
         if ($action['decisionPath'] == 'no' && !$allowNegative) {
             return null;
-        } 
-        
+        }
+
         //default the dueDate to now.
         $dueDate = new \DateTime($initNowStr);
-        
-        if ($action['triggerMode'] == 'interval') {    
+
+        if ($action['triggerMode'] == 'interval') {
             if($action['decisionPath'] == 'no' && $allowNegative) {
                 $dueDate = clone $parentTriggeredDate;
             }
@@ -200,12 +212,12 @@ class TimingHelper
         } elseif($action['triggerMode'] == 'date') {
             $dueDate = $action['triggerDate'];
         }
-            
+
         return $dueDate;
     }
-    
+
     /**
-     * Private helper function that gets the next run date based on our timing 
+     * Private helper function that gets the next run date based on our timing
      * rules.
      * @param Timing $timing The timing rules object to use for the calculation
      * this should have been pre-screened for an expression, etc.
@@ -217,15 +229,15 @@ class TimingHelper
      * error/issue.
      */
     private function getNextRunDate(
-                        Timing $timing, 
-                        Lead $lead, 
+                        Timing $timing,
+                        Lead $lead,
                         $initNowStr = 'now'
                     )
-    {   
+    {
         $cron = CronExpression::factory($timing->getExpression());
-        
+
         $timezone = null;
-        
+
         //attempt to use the contact's timezone (if directed)
         if($timing->useContactTimezone()) {
             if( ! $lead->getIpAddresses()->isEmpty()) {
@@ -236,21 +248,21 @@ class TimingHelper
                 }
             }
         }
-        
+
         //if no timezone is set yet, try to get it from the Timing settings.
         if(($timezone == null) && ($timing->getTimezone() != null)) {
             $timezone = $timing->getTimezone();
         }
-        
+
         //if no timezone is set yet, use the system's default timezone.
         if($timezone == null) {
             $timezone = date_default_timezone_get();
         }
-        
+
         //calculate 'now' (offset by timezone)
         $now = new \DateTime($initNowStr);
         $now->setTimezone(new \DateTimeZone($timezone));
-        
+
         //calculate the next run date
         //see https://github.com/mtdowling/cron-expression/blob/master/src/Cron/CronExpression.php
         $nextRunDate = $cron->getNextRunDate(
@@ -258,7 +270,7 @@ class TimingHelper
                                     0, //Number of matches to skip before returning a matching next run date.
                                     true //allowCurrentDate: Set to TRUE to return the current date if it matches the cron expression.
                                 );
-        
+
         return $nextRunDate;
     }
 }
