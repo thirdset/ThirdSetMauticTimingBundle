@@ -240,7 +240,8 @@ class TimingHelper
 
         //attempt to use the contact's timezone (if directed)
         if($timing->useContactTimezone()) {
-            if( ! $lead->getIpAddresses()->isEmpty()) {
+            $timezone = $lead->getTimezone();
+            if(empty($timezone) && ! $lead->getIpAddresses()->isEmpty()) {
                 /** @var $ipDetails array */
                 $ipDetails = $lead->getIpAddresses()->first()->getIpDetails();
                 if( ! empty($ipDetails['timezone'])) {
@@ -250,12 +251,12 @@ class TimingHelper
         }
 
         //if no timezone is set yet, try to get it from the Timing settings.
-        if(($timezone == null) && ($timing->getTimezone() != null)) {
+        if(empty($timezone) && ($timing->getTimezone() != null)) {
             $timezone = $timing->getTimezone();
         }
 
         //if no timezone is set yet, use the system's default timezone.
-        if($timezone == null) {
+        if(empty($timezone)) {
             $timezone = date_default_timezone_get();
         }
 
