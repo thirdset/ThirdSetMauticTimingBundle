@@ -26,7 +26,7 @@ For example, you could add a cron expression that only allows sending on weekday
    Note: newer versions of Mautic just have an "Install/Upgrade Plugins" button
   (without the dropdown arrow).
 5. You should now see the Timing plugin in your list of plugins.
-6. Run the following console commands to ensure that the database was updated:
+6. Run the following console commands to update the database:
 
 ```
 php app/console doctrine:schema:update --dump-sql
@@ -53,7 +53,11 @@ Example:
 
 When this field is enabled, the plugin will evaluate the cron expression off of the Contact's time zone.  This allows you to only send emails during the Contact's working hours.
 
-If the Contact's time zone isn't known, the plugin will fall back to the system default time zone or the time zone that you set with the Time Zone field (see below.)
+The contact time zone is evaluated in the following order: 
+1. The timezone field of the contact (e.g. `mautic.lead.field.timezone`), else:
+2. The timezone of the last ip address used by the contact, else:
+3. The value of the `Time Zone Field` in the action, else:
+4. The system default time zone
 
 #### Time Zone Field
 
