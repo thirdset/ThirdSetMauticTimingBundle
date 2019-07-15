@@ -78,10 +78,10 @@ apk update && apk add ca-certificates && update-ca-certificates && apk add opens
 
 #### Running the Tests
 
-Once PHPUnit is installed, you can run the tests by navigating to the root directory of this plugin and running:
+Put the plugin dir in mautic plugins dir (`./plugins`) and run in `mautic` root dir:
 
 ```
-phpunit
+bin/phpunit --bootstrap vendor/autoload.php --configuration app/phpunit.xml.dist 'MauticPlugin\ThirdSetMauticTimingBundle\Tests\Helper\TimingHelperTest' plugins/ThirdSetMauticTimingBundle/Tests/Helper/TimingHelperTest.php 
 ```
 
 ## Credits
