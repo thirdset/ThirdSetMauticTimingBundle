@@ -7,7 +7,7 @@ The ThirdSetMauticTimingBundle is a [Mautic](http://www.mautic.org) plugin that 
 For example, you could add a cron expression that only allows sending on weekdays during working hours in New York.
 
 ### Compatibility
- * This plugin has been tested with up to v2.15.0 of Mautic.
+ * This plugin has been tested with up to v2.15.1 of Mautic.
  * This plugin has been tested with up to v7.1.16 of PHP.
 
 ### Features
