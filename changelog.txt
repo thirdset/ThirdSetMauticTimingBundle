@@ -1,3 +1,10 @@
+= 2.0.1 =
+
+* Updated the README.md to reflect that the plugin has been tested with up to 
+  Mautic 2.15.1.
+* Updated the README.md to reflect that the plugin has been tested with up to 
+  PHP 7.1.30.
+
 = 2.0.0 =
 
 * Now uses (and gives priority to) the Preferred Time Zone field on the Contact 
@@ -5,35 +12,43 @@
   Note that previous versions of this plugin ignore the Preferred Time Zone
   field and instead only use the contact's IP (if known) to determine the
   Contact's time zone. See the README.md for more details (#19, credit: @regevbr)
-* Updated the README to reflect that the plugin has been tested with up to Mautic 2.15.0.
+* Updated the README to reflect that the plugin has been tested with up to 
+  Mautic 2.15.0.
 
 = 1.2.1 =
 
-* Fixed a bug where the plugin was trying to apply timing rules to events that didn't have a timing expression (#17).
+* Fixed a bug where the plugin was trying to apply timing rules to events that 
+  didn't have a timing expression (#17).
 * Fixed a backwards compatibility issue with Mautic < 2.14.
 
 = 1.2.0 =
 
 * Updated the plugin to hook Mautic 2.14's refactored campaign processing system. 
-* Updated the README to reflect that the plugin has been tested with up to Mautic 2.14.0.
+* Updated the README to reflect that the plugin has been tested with up to 
+  Mautic 2.14.0.
 
 = 1.1.7 =
 
-* Updated the README to reflect that the plugin has been tested with up to Mautic 2.13.1.
-* Updated the README to reflect that the plugin has been tested with up to PHP 7.1.16.
+* Updated the README to reflect that the plugin has been tested with up to 
+  Mautic 2.13.1.
+* Updated the README to reflect that the plugin has been tested with up to 
+  PHP 7.1.16.
 
 = 1.1.6 =
 
-* Updated the README to reflect that the plugin has been tested with up to Mautic 2.12.0.
+* Updated the README to reflect that the plugin has been tested with up to 
+  Mautic 2.12.0.
 
 = 1.1.5 =
 
-* Updated the README to reflect that the plugin has been tested with up to Mautic 2.11.0.
+* Updated the README to reflect that the plugin has been tested with up to 
+  Mautic 2.11.0.
 * Updated the README with some additional installation info.
 
 = 1.1.4 =
 
-* Fixed a bug that would break saving certain events with NOTICE level PHP errors turned on.
+* Fixed a bug that would break saving certain events with NOTICE level PHP 
+  errors turned on.
 
 = 1.1.3 =
 
@@ -42,21 +57,26 @@
 = 1.1.2 =
 
 * Fixed a compatibility issue with Mautic 2.7.1.
-* Updated the README to reflect that the plugin has been tested with up to Mautic 2.7.1.
-* Updated the README with info regarding how to manually update the database (if necessary).
+* Updated the README to reflect that the plugin has been tested with up to 
+  Mautic 2.7.1.
+* Updated the README with info regarding how to manually update the database (if
+  necessary).
 
 = 1.1.1 =
 
-* Fixed a bug that occurred when attempting to use a contact's timezone when their ip isn't set (credit: @sageeki).
+* Fixed a bug that occurred when attempting to use a contact's timezone when 
+  their ip isn't set (credit: @sageeki).
 
 = 1.1.0 =
 
-* Now using the timing fields to schedule events (rather than to abort execution as was done in previous versions).
+* Now using the timing fields to schedule events (rather than to abort execution
+  as was done in previous versions).
 * Added a 'Use Work Hours' link next to the Expression field.
 
 = 1.0.2 =
 
-* Fixed a bug that was throwing errors in the log when a new action event form for a new campaign was opened.
+* Fixed a bug that was throwing errors in the log when a new action event form
+  for a new campaign was opened.
 * Events with missing or empty timing data now bypassing timing rules.
 
 = 1.0.1 =
