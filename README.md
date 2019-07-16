@@ -54,7 +54,7 @@ Example:
 When this field is enabled, the plugin will evaluate the cron expression off of the Contact's time zone.  This allows you to only send emails during the Contact's working hours.
 
 The contact time zone is evaluated in the following order: 
-1. The timezone field of the contact (e.g. `mautic.lead.field.timezone`), else:
+1. The timezone field of the contact (e.g. `mautic.lead.field.timezone`) (Mautic > 2.6.1), else:
 2. The timezone of the last ip address used by the contact, else:
 3. The value of the `Time Zone Field` in the action, else:
 4. The system default time zone

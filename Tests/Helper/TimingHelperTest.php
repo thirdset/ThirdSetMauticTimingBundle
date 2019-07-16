@@ -272,13 +272,19 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @testdox checkEventTiming correctly returns true when a *lead's* field time
-     * zone makes it due.
+     * @testdox checkEventTiming correctly returns true when a *lead's* field
+     * time zone makes it due.
      *
      * @covers \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper::checkEventTiming
      */
     public function testCheckEventTimingCorrectlyReturnsTrueWhenContactsFieldTimezoneMakesItDue()
     {
+        // The timezone propterty was added to the Lead in Mautic 2.6.1.
+        if (!method_exists('\Mautic\LeadBundle\Entity\Lead', 'getTimezone')) {
+            // If we are testing against Mautic < 2.6.1, skip this test.
+            return;
+        }
+
         // The time and expression would return false, but the offset should
         // cause them to return true instead.
         $mockNow = '2016-01-01 10:00:00';
@@ -828,10 +834,13 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
             ->method('getIpAddresses')
             ->will($this->returnValue($ipAddresses));
 
-        // Stub the lead->getTimezone() function.
-        $lead->expects($this->any())
-            ->method('getTimezone')
-            ->will($this->returnValue($fieldTimezone));
+        // Stub the lead->getTimezone() function (if it exists).
+        // The getTimezone method was added in Mautic 2.6.1.
+        if (method_exists('\Mautic\LeadBundle\Entity\Lead', 'getTimezone')) {
+            $lead->expects($this->any())
+                ->method('getTimezone')
+                ->will($this->returnValue($fieldTimezone));
+        }
 
         return $lead;
     }

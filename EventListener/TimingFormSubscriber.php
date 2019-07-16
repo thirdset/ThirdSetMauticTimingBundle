@@ -78,7 +78,7 @@ class TimingFormSubscriber implements EventSubscriberInterface
         $data = $formEvent->getData();
 
         // If the timing isn't set, try to get it from the db.
-        if ((!isset($data['timing']['expression'])) && (null !== $this->event)) ) {
+        if ((!isset($data['timing']['expression'])) && (null !== $this->event)) {
 
             // Retrieve the campaign event timing from the db.
             /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */

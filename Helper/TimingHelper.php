@@ -243,7 +243,10 @@ class TimingHelper
 
         // Attempt to use the contact's timezone (if directed).
         if ($timing->useContactTimezone()) {
-            $timezone = $lead->getTimezone();
+
+            if (method_exists($lead, 'getTimezone')) {
+                $timezone = $lead->getTimezone();
+            }
             if ((empty($timezone)) && (!$lead->getIpAddresses()->isEmpty())) {
                 /* @var $ipDetails array */
                 $ipDetails = $lead->getIpAddresses()->first()->getIpDetails();
