@@ -1,3 +1,12 @@
+= 2.0.0 =
+
+* Now uses (and gives priority to) the Preferred Time Zone field on the Contact 
+  (if set) when determining the Contact's time zone (applies to Mautic >= 2.6.1).
+  Note that previous versions of this plugin ignore the Preferred Time Zone
+  field and instead only use the contact's IP (if known) to determine the
+  Contact's time zone. See the README.md for more details (#19, credit: @regevbr)
+* Updated the README to reflect that the plugin has been tested with up to Mautic 2.15.0.
+
 = 1.2.1 =
 
 * Fixed a bug where the plugin was trying to apply timing rules to events that didn't have a timing expression (#17).
@@ -38,7 +47,7 @@
 
 = 1.1.1 =
 
-* Fixed a bug that occurred when attempting to use a contact's timezone when their ip isn't set (@sageeki).
+* Fixed a bug that occurred when attempting to use a contact's timezone when their ip isn't set (credit: @sageeki).
 
 = 1.1.0 =
 
