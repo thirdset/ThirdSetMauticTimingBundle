@@ -17,7 +17,7 @@ class MinutesField extends AbstractField
 
     public function increment(DateTime $date, $invert = false, $parts = null)
     {
-        if (is_null($parts)) {
+        if (null === $parts) {
             if ($invert) {
                 $date->modify('-1 minute');
             } else {

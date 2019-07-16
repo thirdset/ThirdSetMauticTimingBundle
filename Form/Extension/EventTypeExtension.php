@@ -19,20 +19,20 @@ use MauticPlugin\ThirdSetMauticTimingBundle\EventListener\TimingFormSubscriber;
 
 /**
  * Class EventTypeExtension.
- * 
+ *
  * This extension is registered in the ThirdSetMauticTimingBundle class.
  *
  * @package ThirdSetMauticTimingBundle
  */
 class EventTypeExtension extends AbstractTypeExtension
 {
-    /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
+    /** @var \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
 
-    /* @var $eventModel \Mautic\CampaignBundle\Model\EventModel */
+    /** @var \Mautic\CampaignBundle\Model\EventModel */
     private $eventModel;
-    
-    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+
+    /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
     private $timingModel;
 
     /**
@@ -51,7 +51,7 @@ class EventTypeExtension extends AbstractTypeExtension
         $this->eventModel = $eventModel;
         $this->timingModel = $timingModel;
     }
-    
+
     /**
      * Returns the name of the type being extended.
      *
@@ -69,27 +69,27 @@ class EventTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //if this is an 'action' or 'condition' event, add the timing form.
+        // If this is an 'action' or 'condition' event, add the timing form.
         if (in_array($options['data']['eventType'], ['action', 'condition'])) {
-            
-            //add timing form
+
+            // Add timing form.
             $builder->add('timing', 'timing', array(
                     'required'    => false,
                 )
             );
             //var_dump($options['data']); //For debugging (goes to AJAX response).
-            
-            //Get the event (or use null) if this is a new Campaign
+
+            // Get the event (or use null) if this is a new Campaign.
             $event = null;
             $update = (!empty($options['data']['id']) && strpos($options['data']['id'], 'new') === false) ? true : false;
-            if($update) {
+            if ($update) {
                 $eventId = $options['data']['id'];
 
                 /* @var $event \Mautic\CampaignBundle\Entity\Event */
                 $event = $this->eventModel->getEntity($eventId);
             }
 
-            //add timing form event subscriber
+            // Add timing form event subscriber.
             $builder->addEventSubscriber(
                         new TimingFormSubscriber(
                                 $this->session,
@@ -99,5 +99,5 @@ class EventTypeExtension extends AbstractTypeExtension
                     );
         }
     }
-    
+
 }

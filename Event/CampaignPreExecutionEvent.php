@@ -17,31 +17,31 @@ use Mautic\LeadBundle\Entity\Lead;
  * Class CampaignPreExecutionEvent.
  */
 class CampaignPreExecutionEvent extends Event
-{ 
+{
     /**
      * @var array
      */
     protected $eventData;
-    
+
     /**
      * @var \DateTime;
      */
     protected $parentTriggeredDate;
-    
+
     /**
      *
-     * @var boolean 
+     * @var boolean
      */
     protected $allowNegative;
-    
+
     /**
      * @var \Mautic\LeadBundle\Entity\Lead;
      */
     protected $lead;
-    
+
     /**
      *
-     * @var \DateTime|boolean 
+     * @var \DateTime|boolean
      */
     protected $eventTriggerDate;
 
@@ -70,13 +70,13 @@ class CampaignPreExecutionEvent extends Event
 
     /**
      * Get the campaign event's data array.
-     * @return array An array of data for the campaign event. 
+     * @return array An array of data for the campaign event.
      */
     public function getEventData()
     {
         return $this->eventData;
     }
-    
+
     /**
      * Get the trigger \DateTime of the campaign Event's parent.
      * @return \DateTime The trigger \DateTime of the campaign Event's parent.
@@ -85,16 +85,16 @@ class CampaignPreExecutionEvent extends Event
     {
         return $this->parentTriggeredDate;
     }
-    
+
     /**
-     * Whether or not to allow negative (for 'no' decission paths).
+     * Whether or not to allow negative (for 'no' decision paths).
      * @return boolean Returns whether or not to allow negative.
      */
     public function allowNegative()
     {
         return $this->allowNegative;
     }
-    
+
     /**
      * Get the Lead associated with the event.
      * @return Mautic\LeadBundle\Entity\Lead The Lead/Contact associated with
@@ -104,7 +104,7 @@ class CampaignPreExecutionEvent extends Event
     {
         return $this->lead;
     }
-    
+
     /**
      * Get the campaign Event trigger DateTime if in the future, or true if the
      * campaign Event is already due.
@@ -115,10 +115,10 @@ class CampaignPreExecutionEvent extends Event
     {
         return $this->eventTriggerDate;
     }
-    
+
     /**
      * Sets the campaign EventTriggerDate to allow for filtering the value.
-     * @param \DateTime|boolean $eventTriggerDate The campaign Event trigger 
+     * @param \DateTime|boolean $eventTriggerDate The campaign Event trigger
      * \DateTime if in the future or true if the campaign Event is already due.
      */
     public function setEventTriggerDate($eventTriggerDate)

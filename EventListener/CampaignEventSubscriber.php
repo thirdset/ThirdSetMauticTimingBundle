@@ -23,9 +23,9 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
 class CampaignEventSubscriber extends CommonSubscriber
 {
 
-    /* @var $timingHelper \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
+    /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
     private $timingHelper;
-    
+
     /**
      * Constructor.
      * @param TimingHelper $timingHelper
@@ -36,7 +36,7 @@ class CampaignEventSubscriber extends CommonSubscriber
     {
         $this->timingHelper = $timingHelper;
     }
-    
+
     /**
      * Get the list of events that this subscriber subscribes to.
      * @return array
@@ -49,22 +49,22 @@ class CampaignEventSubscriber extends CommonSubscriber
     }
 
     /**
-     * Method to be applied to the 
-     * plugin.thirdset.timing.campaign_pre_event_execution event.  
+     * Method to be applied to the
+     * plugin.thirdset.timing.campaign_pre_event_execution event.
      * @param CampaignPreExecutionEvent $event
      */
     public function onPreEventExecution(CampaignPreExecutionEvent $event)
     {
-        //if the eventTriggerDate is already set, just leave it alone.
-        if($event->getEventTriggerDate() == null) {
-        
+        // if the eventTriggerDate is already set, just leave it alone.
+        if (null === $event->getEventTriggerDate()) {
+
             $eventTriggerDate = $this->timingHelper->checkEventTiming(
-                                            $event->getEventData(), 
+                                            $event->getEventData(),
                                             $event->getParentTriggeredDate(),
                                             $event->allowNegative(),
                                             $event->getLead()
                                         );
-            
+
             $event->setEventTriggerDate($eventTriggerDate);
         }
     }

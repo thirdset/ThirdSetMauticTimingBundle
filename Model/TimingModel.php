@@ -38,7 +38,7 @@ class TimingModel extends CommonFormModel
     {
         return $this->em->getRepository('ThirdSetMauticTimingBundle:Timing');
     }
-    
+
     /**
      * Gets a Timing entity by its id or generates a new Timing entity if no id
      * is passed.
@@ -50,7 +50,7 @@ class TimingModel extends CommonFormModel
      */
     public function getEntity($id = null)
     {
-        if ($id === null) {
+        if (null === $id) {
             return new Timing();
         }
 
@@ -67,19 +67,19 @@ class TimingModel extends CommonFormModel
      */
     public function getTimingForEvent(Event $event = null)
     {
-        if ($event === null) {
+        if (null === $event) {
             return new Timing($event);
         }
 
         $entity = parent::getEntity($event->getId());
-        
-        if($entity == null) {
+
+        if (null === $entity) {
             $entity = new Timing($event);
         }
 
         return $entity;
     }
-    
+
     /**
      * Get a specific Timing entity.
      * @param $id The id of the Timing entity that you want to get.

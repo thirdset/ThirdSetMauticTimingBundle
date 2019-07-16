@@ -20,7 +20,7 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 /**
  * Class TimingFormSubscriber. Subscribes to events that occur with the Timing
  * form.
- * 
+ *
  * Note: this subscriber is registered in the Form\Extension\EventTypeExtension
  * class.
  *
@@ -28,13 +28,13 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
  */
 class TimingFormSubscriber implements EventSubscriberInterface
 {
-    /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
+    /** @var \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
-    
-    /* @var $event \Mautic\CampaignBundle\Entity\Event */
+
+    /** @var \Mautic\CampaignBundle\Entity\Event */
     private $event;
-    
-    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+
+    /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
     private $timingModel;
 
     /**
@@ -67,31 +67,31 @@ class TimingFormSubscriber implements EventSubscriberInterface
 
     /**
      * Called when a form is pre-populated.
-     * 
+     *
      * Add any timing data to the formEvent.
-     * 
+     *
      * @param FormEvent $formEvent
      */
     public function onPreSetData(FormEvent $formEvent)
     {
-        //get the data from the from event
+        // Get the data from the from event.
         $data = $formEvent->getData();
-        
-        //if the timing isn't set, try to get it from the db.
-        if(( ! isset($data['timing']['expression'])) && ($this->event != null) ) {
 
-            //retrieve the campaign event timing from the db.
+        // If the timing isn't set, try to get it from the db.
+        if ((!isset($data['timing']['expression'])) && (null !== $this->event)) ) {
+
+            // Retrieve the campaign event timing from the db.
             /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
             $timing = $this->timingModel->getTimingForEvent($this->event);
 
-            //add the campaign event timing to the data.
+            // Add the campaign event timing to the data.
             $data['timing']['expression'] = $timing->getExpression();
             $data['timing']['use_contact_timezone'] = $timing->useContactTimezone();
             $data['timing']['timezone'] = $timing->getTimezone();
 
-            //set our modified data as the data to be sent to the form
+            // Set our modified data as the data to be sent to the form.
             $formEvent->setData($data);
         }
     }
-    
+
 }

@@ -25,22 +25,22 @@ class Timing
      * @var Event
      */
     private $event;
-    
+
     /**
      * The cron expression for the Timing.
-     *  @var string 
+     * @var string
      */
     private $expression;
-    
+
     /**
      * Whether or not to use the contact's timezone.
-     * @var boolean 
+     * @var boolean
      */
     private $useContactTimezone;
-    
+
     /**
-     * The timezone for the Timing (ex: "America/Los_Angeles")
-     * @var string 
+     * The timezone for the Timing (ex: "America/Los_Angeles").
+     * @var string
      */
     private $timezone;
 
@@ -48,9 +48,9 @@ class Timing
      * Constructor.
      * @param Event $event|null The event that the Timing is for.
      * @param string|null $expression The cron expression for the Timing.
-     * @param boolean|null $useContactTimezone Whether or not to use the 
+     * @param boolean|null $useContactTimezone Whether or not to use the
      * contact's timezone.
-     * @param string|null $timezone The timezone for the Timing 
+     * @param string|null $timezone The timezone for the Timing
      * (ex: "America/Los_Angeles")
      */
     public function __construct(
@@ -58,7 +58,7 @@ class Timing
                         $expression = null,
                         $useContactTimezone = null,
                         $timezone = null
-                    ) 
+                    )
     {
         $this->event = $event;
         $this->expression = $expression;
@@ -75,28 +75,28 @@ class Timing
 
         $builder->setTable('campaign_events_timing')
             ->setCustomRepositoryClass('MauticPlugin\ThirdSetMauticTimingBundle\Entity\TimingRepository');
-        
+
         $builder->createOneToOne('event', 'Mautic\CampaignBundle\Entity\Event')
             ->isPrimaryKey()
-            ->addJoinColumn('event_id', 'id', false, true, 'CASCADE')            
+            ->addJoinColumn('event_id', 'id', false, true, 'CASCADE')
             ->build();
 
         $builder->createField('expression', 'string')
             ->columnName('expression')
             ->nullable()
             ->build();
-        
+
         $builder->createField('useContactTimezone', 'integer')
             ->columnName('use_contact_timezone')
             ->nullable()
             ->build();
-        
+
         $builder->createField('timezone', 'string')
             ->columnName('timezone')
             ->nullable()
             ->build();
     }
-    
+
     /**
      * Method to post data to the Timing entity.
      * @param Event $event The eventId of the Campaign Event that the Timing
@@ -106,10 +106,10 @@ class Timing
     public function addPostData($dataArray)
     {
         $this->expression = $dataArray['expression'];
-        
+
         $useContactTimezone = ( ! empty($dataArray['use_contact_timezone'])) ? $dataArray['use_contact_timezone'] : 0;
         $this->useContactTimezone = $useContactTimezone;
-        
+
         $this->timezone = $dataArray['timezone'];
     }
 
@@ -144,7 +144,7 @@ class Timing
     {
         return get_object_vars($this);
     }
-    
+
     /**
      * Sets the cron expression.
      * @param string The cron expression.
@@ -153,7 +153,7 @@ class Timing
     {
         $this->expression = $expression;
     }
-    
+
     /**
      * Gets the cron expression.
      * @return string Returns the cron expression.
@@ -162,7 +162,7 @@ class Timing
     {
         return $this->expression;
     }
-    
+
     /**
      * Sets whether or not to use the contact's timezone.
      * @param boolean Whether or not to use the contact's timezone.
@@ -171,7 +171,7 @@ class Timing
     {
         $this->useContactTimezone = $useContactTimezone;
     }
-    
+
     /**
      * Gets whether or not to use the contact's timezone.
      * @return boolean Returns whether or not to use the contact's timezone.
@@ -180,7 +180,7 @@ class Timing
     {
         return $this->useContactTimezone;
     }
-    
+
     /**
      * Sets the timezone.
      * @param string The timezone.
@@ -189,7 +189,7 @@ class Timing
     {
         $this->timezone = $timezone;
     }
-    
+
     /**
      * Gets the timezone.
      * @return string Returns the timezone.

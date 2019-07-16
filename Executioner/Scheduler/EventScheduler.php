@@ -38,18 +38,18 @@ if (class_exists('\Mautic\CampaignBundle\Executioner\Scheduler\EventScheduler'))
 
 /**
  * The EventScheduler class extends Mautic's EventScheduler class to add our
- * additional timing and scheduling logic. 
- * 
+ * additional timing and scheduling logic.
+ *
  * We extend via a middle man class called VersionSafeEventScheduler (defined
  * above) to prevent ClassNotFoundExceptions on older versions of Mautic.
- * 
+ *
  * This class works with Mautic v2.14 and up.
- * 
+ *
  * @package ThirdSetMauticTimingBundle
  * @since 1.2
  */
 class EventScheduler extends VersionSafeEventScheduler
-{   
+{
     /**
      * We store the current contact here so that we can use their time zone
      * when making scheduling decisions. Normally we would pass this in as a
@@ -58,10 +58,10 @@ class EventScheduler extends VersionSafeEventScheduler
      * @var \Mautic\LeadBundle\Entity\Lead
      */
     protected $currentContact;
-    
+
     /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
     protected $timingHelper;
-    
+
     /**
      * Custom constructor. Extends the standard EventScheduler constructor to
      * also inject the TimingHelper service.
@@ -94,14 +94,14 @@ class EventScheduler extends VersionSafeEventScheduler
                     $dispatcher,
                     $coreParametersHelper
                 );
-        
+
         $this->timingHelper = $timingHelper;
     }
-    
+
     /**
      * Overrides the standard getExecutionDateTime method to use our custom
      * contact specific timing logic.
-     * 
+     *
      * @param Event          $event The Campaign Event that is being processed.
      * @param \DateTime|null $compareFromDateTime The date to compare from (this
      * would typically be 'now').
@@ -116,34 +116,34 @@ class EventScheduler extends VersionSafeEventScheduler
                         \DateTime $compareFromDateTime = null,
                         \DateTime $comparedToDateTime = null
                     )
-    {   
+    {
         // Get the executionDateTime from the parent method.
         $executionDateTime = parent::getExecutionDateTime(
                                         $event,
                                         $compareFromDateTime,
                                         $comparedToDateTime
                                     );
-        
+
         // Now apply our extended timing rules. Note that contact may be null
         // for certain executioners and that's okay. The only one that we are
-        // concerned with is the EventExecutioner and that one is being 
+        // concerned with is the EventExecutioner and that one is being
         // overridden to set the contact.
-        if($this->currentContact != null) {
+        if (null !== $this->currentContact) {
             $executionDateTime = $this->timingHelper->getExecutionDateTime(
                                     $event,
                                     $this->currentContact,
                                     $executionDateTime
                             );
         }
-        
+
         return $executionDateTime;
     }
-    
+
     /**
      * Set the current contact (the contact that is currently being scheduled).
      *
      * @param \Mautic\LeadBundle\Entity\Lead $currentContact
-     * 
+     *
      * @return EventScheduler
      */
     public function setCurrentContact(Lead $currentContact)
@@ -162,5 +162,5 @@ class EventScheduler extends VersionSafeEventScheduler
     {
         return $this->currentContact;
     }
-    
+
 }

@@ -10,14 +10,14 @@
 namespace MauticPlugin\ThirdSetMauticTimingBundle;
 
 /**
- * Class TimingEvents
+ * Class TimingEvents.
  * Events available for ThirdSetMauticTimingBundle.
  */
 final class TimingEvents
 {
 
     /**
-     * The plugin.thirdset.timing.campaign_pre_event_execution event is 
+     * The plugin.thirdset.timing.campaign_pre_event_execution event is
      * dispatched before a campaign event is executed.
      *
      * The event listener receives a

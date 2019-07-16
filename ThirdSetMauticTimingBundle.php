@@ -17,20 +17,20 @@ use Mautic\PluginBundle\Bundle\PluginBundleBase;
 use MauticPlugin\ThirdSetMauticTimingBundle\DependencyInjection\Compiler\OverrideServiceCompilerPass;
 
 /**
- * Class ThirdSetMauticTimingBundle
+ * Class ThirdSetMauticTimingBundle.
  *
  * @package MauticPlugin\ThirdSetMauticTimingBundle
  */
 class ThirdSetMauticTimingBundle extends PluginBundleBase
 {
-    
+
     /**
      * {@inheritdoc}
      */
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
-        
+
         /**
          * NOTE: this is declared here (instead of in config.php) so that we
          * can inject it into the services defined below in this file.
@@ -41,9 +41,9 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
                 'MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel'
             )
             ->addArgument(new Reference('doctrine.orm.entity_manager'));
-        
+
         /**
-         * EventType
+         * EventType.
          * NOTE: this is declared here (instead of in config.php) so that we
          * can inject it into the services defined below in this file.
          */
@@ -55,9 +55,9 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
             ->addArgument(new Reference('session'))
             ->addArgument(new Reference('plugin.thirdset.timing.campaign_event_manager'))
             ->addTag('form.type', array('alias' => 'timing'));
-        
+
         /**
-         * Form Type Extensions
+         * Form Type Extensions.
          * Note: these are registered here because Mautic's config system
          * doesn't seem to be able to handle complex tags.
          */
@@ -70,8 +70,8 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
             ->addArgument(new Reference('mautic.campaign.model.event'))
             ->addArgument(new Reference('plugin.thirdset.timing.event_timing_model'))
             ->addTag('form.type_extension', array('extended_type' => 'Mautic\CampaignBundle\Form\Type\EventType'));
-        
-        //Register our custom form theme
+
+        // Register our custom form theme.
         $container->loadFromExtension('framework', array(
             'templating' => array(
                 'form' => array(
@@ -80,10 +80,10 @@ class ThirdSetMauticTimingBundle extends PluginBundleBase
                     ),
                 ),
             ),
-        )); 
-        
-        //Add a compiler pass for overriding mautic services
+        ));
+
+        // Add a compiler pass for overriding mautic services.
         $container->addCompilerPass(new OverrideServiceCompilerPass());
     }
-    
+
 }

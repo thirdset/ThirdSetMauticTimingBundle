@@ -2,7 +2,7 @@
 
 /*
  * @package     ThirdSetMauticTimingBundle
- * @copyright   2018 Third Set Productions.
+ * @copyright   2019 Third Set Productions.
  * @author      Third Set Productions
  * @link        http://www.thirdset.com
  * @license     GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -67,13 +67,13 @@ class TimingHelper
 
         // If there is no timing data for the event, return the received
         // executionDateTime as is.
-        if($timing == null) {
+        if (null === $timing) {
             return $executionDateTime;
         }
 
         // If the timing expression is empty/null, return the received
         // executionDateTime as is.
-        if(empty($timing->getExpression())) {
+        if (empty($timing->getExpression())) {
             return $executionDateTime;
         }
 
@@ -116,17 +116,19 @@ class TimingHelper
         /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->timingModel->getById($eventId);
 
-        //if there is no timing data for the event, return null (hand off to core methods)
-        if($timing == null) {
+        // If there is no timing data for the event, return null (hand off to
+        // core methods).
+        if (null === $timing) {
             return null;
         }
 
-        //if the timing expression is empty/null, return null (hand off to core methods)
-        if(empty($timing->getExpression())) {
+        // If the timing expression is empty/null, return null (hand off to core
+        //methods).
+        if (empty($timing->getExpression())) {
             return null;
         }
 
-        //get the dueDate (according to the standard Mautic settings)
+        // Get the dueDate (according to the standard Mautic settings).
         $dueDate = $this->getDueDate(
                             $eventData,
                             $parentTriggeredDate,
@@ -134,12 +136,13 @@ class TimingHelper
                             $initNowStr
                     );
 
-        //if the standard mautic logic returns null, return null (hand off to core methods)
-        if($dueDate == null) {
+        // If the standard mautic logic returns null, return null (hand off to
+        // core methods).
+        if (null === $dueDate) {
             return null;
         }
 
-        //get the nextRunDate (next time that the trigger can be run according
+        // Get the nextRunDate (next time that the trigger can be run according
         // to our extended timing rules).
         $nextRunDate = $this->getNextRunDate(
                                 $timing,
@@ -149,10 +152,10 @@ class TimingHelper
 
         $now = new \DateTime($initNowStr);
 
-        if($nextRunDate <= $now) {
-            return true; //trigger now
+        if ($nextRunDate <= $now) {
+            return true; // Trigger now.
         } else {
-            return $nextRunDate; //schedule
+            return $nextRunDate; // Schedule.
         }
     }
 
@@ -176,15 +179,15 @@ class TimingHelper
                             $allowNegative = false,
                             $initNowStr = 'now'
     ) {
-        if ($action['decisionPath'] == 'no' && !$allowNegative) {
+        if (('no' === $action['decisionPath']) && (!$allowNegative)) {
             return null;
         }
 
-        //default the dueDate to now.
+        // Default the dueDate to now.
         $dueDate = new \DateTime($initNowStr);
 
         if ($action['triggerMode'] == 'interval') {
-            if($action['decisionPath'] == 'no' && $allowNegative) {
+            if (('no' === $action['decisionPath']) && ($allowNegative)) {
                 $dueDate = clone $parentTriggeredDate;
             }
 
@@ -209,7 +212,7 @@ class TimingHelper
             $dv = new \DateInterval($dt);
             $dueDate->add($dv);
 
-        } elseif($action['triggerMode'] == 'date') {
+        } elseif ('date' === $action['triggerMode']) {
             $dueDate = $action['triggerDate'];
         }
 
@@ -238,38 +241,38 @@ class TimingHelper
 
         $timezone = null;
 
-        //attempt to use the contact's timezone (if directed)
-        if($timing->useContactTimezone()) {
+        // Attempt to use the contact's timezone (if directed).
+        if ($timing->useContactTimezone()) {
             $timezone = $lead->getTimezone();
-            if(empty($timezone) && ! $lead->getIpAddresses()->isEmpty()) {
-                /** @var $ipDetails array */
+            if ((empty($timezone)) && (!$lead->getIpAddresses()->isEmpty())) {
+                /* @var $ipDetails array */
                 $ipDetails = $lead->getIpAddresses()->first()->getIpDetails();
-                if( ! empty($ipDetails['timezone'])) {
+                if (!empty($ipDetails['timezone'])) {
                     $timezone = $ipDetails['timezone'];
                 }
             }
         }
 
-        //if no timezone is set yet, try to get it from the Timing settings.
-        if(empty($timezone) && ($timing->getTimezone() != null)) {
+        // If no timezone is set yet, try to get it from the Timing settings.
+        if ((empty($timezone)) && (null !== $timing->getTimezone())) {
             $timezone = $timing->getTimezone();
         }
 
-        //if no timezone is set yet, use the system's default timezone.
-        if(empty($timezone)) {
+        // If no timezone is set yet, use the system's default timezone.
+        if (empty($timezone)) {
             $timezone = date_default_timezone_get();
         }
 
-        //calculate 'now' (offset by timezone)
+        // Calculate 'now' (offset by timezone).
         $now = new \DateTime($initNowStr);
         $now->setTimezone(new \DateTimeZone($timezone));
 
-        //calculate the next run date
-        //see https://github.com/mtdowling/cron-expression/blob/master/src/Cron/CronExpression.php
+        // Calculate the next run date.
+        // See https://github.com/mtdowling/cron-expression/blob/master/src/Cron/CronExpression.php
         $nextRunDate = $cron->getNextRunDate(
-                                    $now, //current time
-                                    0, //Number of matches to skip before returning a matching next run date.
-                                    true //allowCurrentDate: Set to TRUE to return the current date if it matches the cron expression.
+                                    $now, // Current time.
+                                    0, // Number of matches to skip before returning a matching next run date.
+                                    true // allowCurrentDate: Set to TRUE to return the current date if it matches the cron expression.
                                 );
 
         return $nextRunDate;

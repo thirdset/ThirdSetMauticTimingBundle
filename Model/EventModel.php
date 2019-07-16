@@ -15,12 +15,12 @@ use MauticPlugin\ThirdSetMauticTimingBundle\TimingEvents;
 /**
  * The EventModel class extends Mautic's EventModel class to add our additional
  * events, etc.
- * 
+ *
  * @package ThirdSetMauticTimingBundle
  * @since 1.0
  */
 class EventModel extends \Mautic\CampaignBundle\Model\EventModel
-{   
+{
     /**
      * {@inheritdoc}
      */
@@ -46,10 +46,10 @@ class EventModel extends \Mautic\CampaignBundle\Model\EventModel
                                     $eventTriggerDate
                                  );
         $this->dispatcher->dispatch(TimingEvents::PRE_EVENT_EXECUTION, $preExecutionEvent);
-        
+
         $eventTriggerDate = $preExecutionEvent->getEventTriggerDate();
-        
-        //call the parent method        
+
+        // Call the parent method.
         return parent::executeEvent(
             $event,
             $campaign,

@@ -15,16 +15,16 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel;
 
 /**
- * Class EventTypeExtension
+ * Class EventTypeExtension.
  *
  * @package ThirdSetMauticTimingBundle
  */
 class TimingType extends AbstractType
 {
-    /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
+    /** @var \Symfony\Component\HttpFoundation\Session\Session */
     private $session;
 
-    /* @var $timingModel \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
+    /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel */
     private $timingModel;
 
     /**
@@ -48,8 +48,8 @@ class TimingType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-            
-        //add the timing_expression field
+
+        // Add the timing_expression field.
         $builder->add('expression', 'text', array(
                     'attr' => array(
                             'title' => 'Enter when the email can be sent.',
@@ -58,7 +58,7 @@ class TimingType extends AbstractType
                     )
                 );
 
-        //add the "Use Contact's timezone?" field
+        // Add the "Use Contact's timezone?" field.
         $builder->add('use_contact_timezone', 'yesno_button_group', [
             'label' => 'Use Contact\'s Time Zone?',
             'attr'  => [
@@ -66,7 +66,7 @@ class TimingType extends AbstractType
             ],
         ]);
 
-        //add the "Add the timezone" field
+        // Add the "Add the timezone" field.
         $builder->add('timezone', 'Symfony\Component\Form\Extension\Core\Type\TimezoneType', array(
                 'label'      => 'Time Zone',
                 'attr'       => array(
@@ -79,7 +79,7 @@ class TimingType extends AbstractType
             )
         );
     }
-    
+
     /**
      * Returns the name associated with the form.
      * @return string

@@ -58,7 +58,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                                                 $mockNow
                                             );
 
-        //Assert that the expected DateTime is returned
+        // Assert that the expected DateTime is returned.
         $this->assertEquals($expected, $executionDateTime);
     }
 
@@ -149,7 +149,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsTrueForADueSimpleExpression()
     {
-        //the time and expression would should return true.
+        // The time and expression would should return true.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 09-19 * * *';
         $useContactTimezone = false;
@@ -172,7 +172,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -192,7 +192,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsDateTimeWhenScheduled()
     {
-        //the time and expression would should return true.
+        // The time and expression would should return true.
         $mockNow = '2016-01-01 01:00:00';
         $expression = '* 09-19 * * *';
         $useContactTimezone = false;
@@ -215,7 +215,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -235,8 +235,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsTrueWhenContactsIpTimezoneMakesItDue()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 01-06 * * *';
         $useContactTimezone = true;
@@ -279,8 +279,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsTrueWhenContactsFieldTimezoneMakesItDue()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 01-06 * * *';
         $useContactTimezone = true;
@@ -303,7 +303,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead(null, $contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -323,9 +323,10 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsDateTimeWhenContactsTimezoneMakesItNotYetDue()
     {
-        //the time and expression would return true, but the offset should
-        //cause them to return a DateTime instead.
-        //It's 10 AM in London (5 AM New York), don't send until 9 AM in New York.
+        // The time and expression would return true, but the offset should
+        // cause them to return a DateTime instead.
+        // It's 10 AM in London (5 AM New York), don't send until 9 AM in New
+        // York.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 09-19 * * *';
         $useContactTimezone = true;
@@ -348,7 +349,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -368,8 +369,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsDateTimeWhenContactsTimezoneIsntKnown()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 01-06 * * *';
         $useContactTimezone = true;
@@ -391,7 +392,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead();
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -413,8 +414,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsTrueWhenTimingTimezoneMakesItDue()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 01-06 * * *';
         $useContactTimezone = false;
@@ -439,7 +440,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -459,8 +460,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsDateTimeWhenTimingTimezoneMakesItNotDue()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 10:00:00';
         $expression = '* 09-19 * * *';
         $useContactTimezone = false;
@@ -485,7 +486,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -505,28 +506,28 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingCorrectlyReturnsNullWhenEventDoesntHaveTimingData()
     {
-        //mock the timingModel
+        // Mock the timingModel.
         $timingModel = $this->getMockBuilder('\MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel')
                                ->disableOriginalConstructor()
                                ->getMock();
 
-        //stub the timingModel->getEntity() function
+        // Stub the timingModel->getEntity() function.
         $timingModel->expects($this->once())
             ->method('getById')
             ->will($this->returnValue(null));
 
-        //create the timingHelper
+        // Create the timingHelper.
         $timingHelper = new TimingHelper(
                             $timingModel
                         );
 
-        /** @var $lead \Mautic\LeadBundle\Entity\Lead */
+        /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead(null);
 
         $eventData = array();
         $eventData['id'] = null;
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -550,7 +551,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $useContactTimezone = null;
         $timezone = null;
 
-        /** @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
+        /* @var $timing \MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing */
         $timing = $this->getMockTiming(
                         $expression,
                         $useContactTimezone,
@@ -566,7 +567,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         $eventData = array();
         $eventData['id'] = null;
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -611,7 +612,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
 
         $allowNegative = false;
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -631,8 +632,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingReturnsExpectedDateTimeWhenTriggerModeIsInterval()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 08:00:00';
         $expression = '* 09-19 * * *';
         $useContactTimezone = false;
@@ -662,7 +663,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -671,7 +672,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                                                 $mockNow
                                             );
 
-        //Assert that the expected DateTime is returned
+        // Assert that the expected DateTime is returned.
         $this->assertEquals($expected, $eventTriggerDate);
     }
 
@@ -683,8 +684,8 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testCheckEventTimingReturnsExpectedDateTimeWhenTriggerModeIsDate()
     {
-        //the time and expression would return false, but the offset should
-        //cause them to return true instead.
+        // The time and expression would return false, but the offset should
+        // cause them to return true instead.
         $mockNow = '2016-01-01 08:00:00';
         $expression = '* 09-19 * * *';
         $useContactTimezone = false;
@@ -713,7 +714,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
         /* @var $lead \Mautic\LeadBundle\Entity\Lead */
         $lead = $this->getMockLead($contactTimezone);
 
-        //call the function
+        // Call the function.
         $eventTriggerDate = $timingHelper->checkEventTiming(
                                                 $eventData,
                                                 null,
@@ -722,7 +723,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                                                 $mockNow
                                             );
 
-        //Assert that the expected DateTime is returned
+        // Assert that the expected DateTime is returned.
         $this->assertEquals($expected, $eventTriggerDate);
     }
 
@@ -732,17 +733,17 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     private function getTimingHelper(Timing $timing = null)
     {
-        //mock the timingModel
+        // Mock the timingModel.
         $timingModel = $this->getMockBuilder('\MauticPlugin\ThirdSetMauticTimingBundle\Model\TimingModel')
                                ->disableOriginalConstructor()
                                ->getMock();
 
-        //stub the timingModel->getEntity() function
+        // Stub the timingModel->getEntity() function.
         $timingModel->expects($this->once())
             ->method('getById')
             ->will($this->returnValue($timing));
 
-        //create the timingHelper
+        // Create the timingHelper.
         $timingHelper = new TimingHelper(
                             $timingModel
                         );
@@ -764,22 +765,22 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                         $timezone = null
                     )
     {
-        //mock the Timing
+        // Mock the Timing.
         $timing = $this->getMockBuilder('\MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing')
                                ->disableOriginalConstructor()
                                ->getMock();
 
-        //stub the timing->getExpression() function
+        // Stub the timing->getExpression() function.
         $timing->expects($this->any())
             ->method('getExpression')
             ->will($this->returnValue($expression));
 
-        //stub the timing->useContactTimezone() function
+        // Stub the timing->useContactTimezone() function.
         $timing->expects($this->any())
             ->method('useContactTimezone')
             ->will($this->returnValue($useContactTimezone));
 
-        //stub the timing->getTimezone() function
+        // Stub the timing->getTimezone() function.
         $timing->expects($this->any())
             ->method('getTimezone')
             ->will($this->returnValue($timezone));
@@ -794,13 +795,13 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
      */
     private function getMockLead($ipTimezone = null, $fieldTimezone = null)
     {
-        //mock the lead
+        // Mock the lead.
         $lead = $this->getMockBuilder('\Mautic\LeadBundle\Entity\Lead')
                                ->disableOriginalConstructor()
                                ->getMock();
 
-        if($ipTimezone != null) {
-            //mock an IpAddress
+        if (null !== $ipTimezone) {
+            // Mock an IpAddress.
             $ipAddress = $this->getMockBuilder('\Mautic\CoreBundle\Entity\IpAddress')
                                    ->disableOriginalConstructor()
                                    ->getMock();
@@ -809,7 +810,7 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
                         'timezone' => $ipTimezone
                     );
 
-            //stub the ipAddress->getIpDetails() function
+            // Stub the ipAddress->getIpDetails() function.
             $ipAddress->expects($this->once())
                 ->method('getIpDetails')
                 ->will($this->returnValue($ipDetails));
@@ -817,16 +818,17 @@ class TimingHelperTest extends \PHPUnit_Framework_TestCase
             $ipAddresses = new ArrayCollection(array($ipAddress));
 
         } else {
-            //if the lead's ip isn't known an empty ArrayCollection is returned.
+            // If the lead's ip isn't known an empty ArrayCollection is
+            // returned.
             $ipAddresses = new ArrayCollection();
         }
 
-        //stub the lead->getIpAddresses() function
+        // Stub the lead->getIpAddresses() function.
         $lead->expects($this->any())
             ->method('getIpAddresses')
             ->will($this->returnValue($ipAddresses));
 
-        //stub the lead->getTimezone() function
+        // Stub the lead->getTimezone() function.
         $lead->expects($this->any())
             ->method('getTimezone')
             ->will($this->returnValue($fieldTimezone));

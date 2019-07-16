@@ -25,20 +25,20 @@ use Symfony\Component\DependencyInjection\Reference;
 class OverrideServiceCompilerPass implements CompilerPassInterface
 {
     /**
-     * Process the compiler pass
+     * Process the compiler pass.
      * @param $container
      */
     public function process(ContainerBuilder $container)
     {
         $schedulerDefinition = null;
-        
+
         try {
             $schedulerDefinition = $container->getDefinition('mautic.campaign.scheduler');
         } catch (\Exception $ex) {
             //
         }
-        if($schedulerDefinition != null) {
-            // Mautic >= v2.14.0
+        if (null !== $schedulerDefinition) {
+            // Mautic >= v2.14.0.
             $schedulerDefinition
                     ->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\Scheduler\EventScheduler')
                     ->addArgument(new Reference('plugin.thirdset.timing.timing_helper'));
@@ -55,7 +55,7 @@ class OverrideServiceCompilerPass implements CompilerPassInterface
             $scheduledExecutionerDefinition = $container->getDefinition('mautic.campaign.executioner.scheduled');
             $scheduledExecutionerDefinition->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Executioner\ScheduledExecutioner');
         } else {
-            // Mautic < v2.14.0
+            // Mautic < v2.14.0.
             $definition = $container->getDefinition('mautic.campaign.model.event');
             $definition->setClass('MauticPlugin\ThirdSetMauticTimingBundle\Model\EventModel');
         }
