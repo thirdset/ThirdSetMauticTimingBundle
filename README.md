@@ -8,7 +8,7 @@ For example, you could add a cron expression that only allows sending on weekday
 
 ### Compatibility
  * This plugin has been tested with up to v2.15.1 of Mautic.
- * This plugin has been tested with up to v7.1.16 of PHP.
+ * This plugin has been tested with up to v7.1.30 of PHP.
 
 ### Features
  * Adds the full ability of cron syntax to your campaign actions allowing you to only send emails at certain times.
