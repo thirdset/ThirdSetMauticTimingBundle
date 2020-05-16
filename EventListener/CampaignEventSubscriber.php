@@ -9,7 +9,7 @@
 
 namespace MauticPlugin\ThirdSetMauticTimingBundle\EventListener;
 
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use MauticPlugin\ThirdSetMauticTimingBundle\TimingEvents;
 use MauticPlugin\ThirdSetMauticTimingBundle\Event\CampaignPreExecutionEvent;
@@ -20,7 +20,7 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
  *
  * @package ThirdSetMauticTimingBundle
  */
-class CampaignEventSubscriber extends CommonSubscriber
+class CampaignEventSubscriber implements EventSubscriberInterface
 {
 
     /** @var \MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper */
