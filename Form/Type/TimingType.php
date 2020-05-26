@@ -59,7 +59,7 @@ class TimingType extends AbstractType
                 );
 
         // Add the "Use Contact's timezone?" field.
-        $builder->add('use_contact_timezone', 'yesno_button_group', [
+        $builder->add('use_contact_timezone', YesNoButtonGroupType::class, [
             'label' => 'Use Contact\'s Time Zone?',
             'attr'  => [
                 'tooltip' => 'If enabled, the timing expression will be evaluated using the contact\'s time zone. If their time zone isn\'t known, it will fallback to the time zone selected below.',
