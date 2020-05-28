@@ -8,7 +8,9 @@
  */
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Form\Type;
 
+use Mautic\CoreBundle\Form\Type\TimezoneType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -50,7 +52,7 @@ class TimingType extends AbstractType
     {
 
         // Add the timing_expression field.
-        $builder->add('expression', 'text', array(
+        $builder->add('expression', TextType::class, array(
                     'attr' => array(
                             'title' => 'Enter when the email can be sent.',
                             'tooltip'  => 'When is the event allowed to occur? Uses standard crontab notation (Google it!).',
@@ -67,7 +69,7 @@ class TimingType extends AbstractType
         ]);
 
         // Add the "Add the timezone" field.
-        $builder->add('timezone', 'Symfony\Component\Form\Extension\Core\Type\TimezoneType', array(
+        $builder->add('timezone', TimezoneType::class, array(
                 'label'      => 'Time Zone',
                 'attr'       => array(
                     'class'   => 'form-control',
