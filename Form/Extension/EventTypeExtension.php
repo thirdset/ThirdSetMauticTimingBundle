@@ -8,6 +8,7 @@
  */
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Form\Extension;
 
+use MauticPlugin\ThirdSetMauticTimingBundle\Form\Type\TimingType;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -73,7 +74,7 @@ class EventTypeExtension extends AbstractTypeExtension
         if (in_array($options['data']['eventType'], ['action', 'condition'])) {
 
             // Add timing form.
-            $builder->add('timing', 'timing', array(
+            $builder->add('timing', TimingType::class, array(
                     'required'    => false,
                 )
             );
