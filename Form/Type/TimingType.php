@@ -9,6 +9,7 @@
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Form\Type;
 
 use Mautic\CoreBundle\Form\Type\TimezoneType;
+use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
