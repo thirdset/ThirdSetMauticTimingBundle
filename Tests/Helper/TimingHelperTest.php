@@ -18,7 +18,7 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
 /**
  * Class TimingHelper test has tests for the TimingHelper class.
  */
-class TimingHelperTest extends \PHPUnit_Framework_TestCase
+class TimingHelperTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @testdox getExecutionDateTime returns the expected DateTime.
