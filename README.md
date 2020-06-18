@@ -12,13 +12,13 @@ For example, you could add a cron expression that only allows sending on weekday
 
 This plugin works on both Mautic 2.x and Mautic 3.x and should work on most versions of PHP.
 
-#### Mautic 2.x
-
-This plugin has been tested with up to **Mautic v2.16.0**.
-
 #### Mautic 3.x
 
 This plugin has been tested with up to **Mautic v3.0.0**.
+
+#### Mautic 2.x
+
+This plugin has been tested with up to **Mautic v2.16.0**.
 
 #### PHP
 

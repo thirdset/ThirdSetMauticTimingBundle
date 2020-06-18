@@ -1,3 +1,10 @@
+= 2.1.0 =
+
+* Added support for Mautic 3.x. - maintained Mautic 2.x compatibility (#21, 
+  credit @indorock).
+* Updated the README.md to reflect that the plugin has been tested with up to 
+  Mautic 3.0.0, Mautic 2.16.0 and PHP 7.3.19.
+
 = 2.0.1 =
 
 * Updated the README.md to reflect that the plugin has been tested with up to 
