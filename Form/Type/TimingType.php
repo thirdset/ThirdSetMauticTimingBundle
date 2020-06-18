@@ -8,7 +8,6 @@
  */
 namespace MauticPlugin\ThirdSetMauticTimingBundle\Form\Type;
 
-use Mautic\CoreBundle\Form\Type\TimezoneType;
 use Mautic\CoreBundle\Form\Type\YesNoButtonGroupType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -70,7 +69,15 @@ class TimingType extends AbstractType
         ]);
 
         // Add the "Add the timezone" field.
-        $builder->add('timezone', TimezoneType::class, array(
+        if (class_exists('Mautic\CoreBundle\Form\Type\TimezoneType')) {
+            // Mautic >= 3.0.
+            $timezoneType = 'Mautic\CoreBundle\Form\Type\TimezoneType';
+        } else {
+            // Mautic < 3.0.
+            $timezoneType = 'Symfony\Component\Form\Extension\Core\Type\TimezoneType';
+        }
+
+        $builder->add('timezone', $timezoneType, array(
                 'label'      => 'Time Zone',
                 'attr'       => array(
                     'class'   => 'form-control',

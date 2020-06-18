@@ -16,7 +16,7 @@ use MauticPlugin\ThirdSetMauticTimingBundle\Entity\Timing;
 use MauticPlugin\ThirdSetMauticTimingBundle\Helper\TimingHelper;
 
 /**
- * Class TimingHelper test has tests for the TimingHelper class.
+ * Class TimingHelperTest has tests for the TimingHelper class.
  */
 class TimingHelperTest extends \PHPUnit\Framework\TestCase
 {
