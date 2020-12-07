@@ -1,3 +1,8 @@
+= 2.1.1 =
+
+* Updated the README.md to reflect that the plugin has been tested with up to 
+  Mautic 3.2.1.
+
 = 2.1.0 =
 
 * Added support for Mautic 3.x. - maintained Mautic 2.x compatibility (#21, 
