@@ -14,7 +14,7 @@ This plugin works on both Mautic 2.x and Mautic 3.x and should work on most vers
 
 #### Mautic 3.x
 
-This plugin has been tested with up to **Mautic v3.0.0**.
+This plugin has been tested with up to **Mautic v3.2.1**.
 
 #### Mautic 2.x
 
