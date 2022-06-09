@@ -10,7 +10,11 @@ For example, you could add a cron expression that only allows sending on weekday
 
 ### Compatibility
 
-This plugin works on both Mautic 2.x and Mautic 3.x and should work on most versions of PHP.
+This plugin works on Mautic 2.x, Mautic 3.x and Mautic 4.x. It should work on most versions of PHP.
+
+#### Mautic 4.x
+
+This plugin has been tested with up to **Mautic v4.3.1**.
 
 #### Mautic 3.x
 
@@ -22,7 +26,7 @@ This plugin has been tested with up to **Mautic v2.16.0**.
 
 #### PHP
 
-This plugin has been tested with up to **PHP v7.3.19**.
+This plugin has been tested with up to **PHP v7.4.29**.
 
 ### Features
 
@@ -35,7 +39,7 @@ This plugin has been tested with up to **PHP v7.3.19**.
 ## [Installation](id:installation)
 
 1. Download or clone this bundle into your Mautic `/plugins` folder.
-2. Manually delete your cache (`var/cache/prod` for Mautic 3.x and `app/cache/prod` for Mautic 2.x).
+2. Manually delete your cache (`var/cache/prod` for Mautic 3.x+ and `app/cache/prod` for Mautic 2.x).
 3. In the Mautic GUI, go to the :gear: icon in the top right and then to Plugins.
 4. Click the "Install/Upgrade Plugins" button in the top right. Note: if you are on an older version of Mautic, click the drowpdown arrow in the top right and then choose "Install/Upgrade Plugins".
 5. You should now see the Timing plugin in your list of plugins.
