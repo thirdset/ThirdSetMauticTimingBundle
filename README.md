@@ -106,6 +106,12 @@ Change directories into the plugin dir (`cd plugins/ThirdSetMauticTimingBundle`)
 phpunit
 ```
 
+Or for older versions of Mautic (<4.0), run:
+
+```bash
+phpunit --bootstrap ../../app/autoload.php
+```
+
 ## Credits
 
 This plugin is developed and maintained by [Third Set Productions](http://www.thirdset.com) the makers of [AdPlugg](http://www.adplugg.com).

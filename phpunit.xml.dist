@@ -10,7 +10,7 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "false"
-    bootstrap                   = "../../app/autoload.php" >
+    bootstrap                   = "../../autoload.php" >
 
     <testsuites>
         <testsuite name="thirdset_timing">
