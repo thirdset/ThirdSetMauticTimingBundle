@@ -1,3 +1,13 @@
+= 2.1.2 =
+
+* Updated the README.md to reflect that the plugin has been tested with up to 
+  Mautic 4.3.1.
+* Updated the README.md to reflect that the plugin has been tested with up to 
+  PHP 7.4.29.
+* Updated the phpunit.xml.dist file for the new location of the bootstrap file.
+* Updated the README.md file to specify how to run unit tests with older 
+  versions of mautic (where the bootstrap file is in a different location).
+
 = 2.1.1 =
 
 * Updated the README.md to reflect that the plugin has been tested with up to 
